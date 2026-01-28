@@ -2,14 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Drive Index</title>
+<title>ADS 250</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+  --bg-dark: #0b1220;
+  --bg-card: #2a3445;
+  --green: #00c853;
+  --text: #e5e7eb;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(180deg, #0b1220, #111827);
+  color: var(--text);
 }
 
 /* LOGIN */
@@ -22,88 +30,135 @@ body {
 
 .login-box {
   background: #020617;
-  padding: 30px;
-  border-radius: 10px;
-  width: 300px;
+  padding: 35px;
+  border-radius: 15px;
+  width: 320px;
   text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
 }
 
 .login-box input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
   border: none;
-  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 .login-box button {
   width: 100%;
-  padding: 10px;
-  background: #38bdf8;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .error {
+  margin-top: 10px;
   color: #f87171;
   font-size: 14px;
 }
 
-/* MAIN APP */
+/* APP */
 #app {
   display: none;
 }
 
-header {
-  padding: 15px;
-  background: #020617;
-  font-size: 18px;
-}
-
-.container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 15px;
-}
-
-.search {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: none;
-}
-
-.file {
+/* NAVBAR */
+nav {
+  background: var(--green);
+  padding: 15px 30px;
   display: flex;
   align-items: center;
-  padding: 12px;
-  border-bottom: 1px solid #1e293b;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  color: white;
   cursor: pointer;
 }
 
-.file:hover {
-  background: #020617;
-}
-
-.icon {
-  width: 40px;
-  font-size: 20px;
-}
-
-.name {
-  flex: 1;
-}
-
-.size {
+.toggle {
+  background: #7c3aed;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
   font-size: 14px;
-  color: #94a3b8;
+}
+
+/* MAIN */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* CARDS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.card h2 {
+  color: #38bdf8;
+  margin-bottom: 20px;
+}
+
+.card button {
+  background: var(--green);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+/* LIGHT MODE */
+.light {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.light .card {
+  background: #e5e7eb;
+}
+
+.light nav {
+  background: #16a34a;
 }
 </style>
 </head>
 
-<body>
+<body id="body">
 
 <!-- LOGIN PAGE -->
 <div id="login">
@@ -115,41 +170,60 @@ header {
   </div>
 </div>
 
-<!-- MAIN PAGE -->
+<!-- MAIN APP -->
 <div id="app">
-  <header>📁 Drive Index</header>
 
-  <div class="container">
-    <input class="search" placeholder="Search files..." onkeyup="searchFiles(this.value)">
+<nav>
+  <div class="logo">ADS 250</div>
+  <ul>
+    <li>Home</li>
+    <li>Class</li>
+    <li>Exam</li>
+    <li>Subjects</li>
+  </ul>
+  <div class="toggle" onclick="toggleMode()">Light Mode</div>
+</nav>
 
-    <!-- FOLDER -->
-    <div class="file" onclick="openLink('https://drive.google.com/drive/folders/1ul8ey5FeDV9ha4dzxXB9EzMXRnNabKQu')">
-      <div class="icon">📂</div>
-      <div class="name">My Drive Folder</div>
-      <div class="size">Folder</div>
+<div class="container">
+
+  <div class="grid">
+    <div class="card">
+      <h2>Data Science</h2>
+      <button onclick="openLink('#')">View Details</button>
     </div>
 
-    <!-- FILES -->
-    <div class="file">
-      <div class="icon">🎬</div>
-      <div class="name" onclick="openLink('https://drive.google.com')">Movie.mp4</div>
-      <div class="size">1.4 GB</div>
+    <div class="card">
+      <h2>Physics</h2>
+      <button onclick="openLink('#')">View Details</button>
     </div>
 
-    <div class="file">
-      <div class="icon">📄</div>
-      <div class="name" onclick="openLink('https://drive.google.com')">Document.pdf</div>
-      <div class="size">2 MB</div>
+    <div class="card">
+      <h2>Linear Algebra</h2>
+      <button onclick="openLink('#')">View Details</button>
     </div>
 
+    <div class="card">
+      <h2>Professional English</h2>
+      <button onclick="openLink('#')">View Details</button>
+    </div>
+
+    <div class="card">
+      <h2>Physics Lab</h2>
+      <button onclick="openLink('#')">View Details</button>
+
+    <div class="card">
+      <h2>Professional Life Skill Development</h2>
+      <button onclick="openLink('#')">View Details</button>
+    </div>
   </div>
+
+</div>
 </div>
 
 <script>
 function login() {
   const id = document.getElementById("userid").value;
   const error = document.getElementById("error");
-
   const pattern = /^2500350\d{2}$/;
 
   if (pattern.test(id)) {
@@ -160,16 +234,12 @@ function login() {
   }
 }
 
-function openLink(url) {
-  window.open(url, "_blank");
+function toggleMode() {
+  document.getElementById("body").classList.toggle("light");
 }
 
-function searchFiles(text) {
-  text = text.toLowerCase();
-  document.querySelectorAll(".file").forEach(file => {
-    const name = file.innerText.toLowerCase();
-    file.style.display = name.includes(text) ? "flex" : "none";
-  });
+function openLink(url) {
+  window.open(url, "_blank");
 }
 </script>
 
