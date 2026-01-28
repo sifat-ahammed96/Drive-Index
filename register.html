@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box {
+  background: #020617;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  background: #00c853;
+  color: white;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 15px;
+  font-size: 14px;
+  word-break: break-all;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Register</h2>
+
+  <input id="name" placeholder="Full name">
+  <input id="studentId" placeholder="Student ID">
+  <input id="email" placeholder="Email">
+
+  <button onclick="register()">Register</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+function register() {
+  fetch("https://ads-auth.sifatraj280.workers.dev/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: document.getElementById("name").value,
+      studentId: document.getElementById("studentId").value,
+      email: document.getElementById("email").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerText =
+      "Your OTP: " + (data.otp || JSON.stringify(data));
+  });
+}
+</script>
+
+</body>
+</html>
