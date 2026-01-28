@@ -1,23 +1,177 @@
-<body style="font-family: Arial; background:#111; color:#fff; padding:20px">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Drive Index</title>
 
-<h1>📂 My Drive Hub</h1>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+}
 
-<h2>🎬 Movies</h2>
-<a href="https://drive.google.com/drive/folders/1ul8ey5FeDV9ha4dzxXB9EzMXRnNabKQu
-" target="_blank">
-Open Movies Folder
-</a>
+/* LOGIN */
+#login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-<h2>🎵 Music</h2>
-<a href="https://drive.google.com/drive/folders/1ul8ey5FeDV9ha4dzxXB9EzMXRnNabKQu
-" target="_blank">
-Open Music Folder
-</a>
+.login-box {
+  background: #020617;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
 
-<h2>📄 Documents</h2>
-<a href="https://drive.google.com/drive/folders/1ul8ey5FeDV9ha4dzxXB9EzMXRnNabKQu
-" target="_blank">
-Open Documents Folder
-</a>
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 10px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: #f87171;
+  font-size: 14px;
+}
+
+/* MAIN APP */
+#app {
+  display: none;
+}
+
+header {
+  padding: 15px;
+  background: #020617;
+  font-size: 18px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 15px;
+}
+
+.search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #1e293b;
+  cursor: pointer;
+}
+
+.file:hover {
+  background: #020617;
+}
+
+.icon {
+  width: 40px;
+  font-size: 20px;
+}
+
+.name {
+  flex: 1;
+}
+
+.size {
+  font-size: 14px;
+  color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="login">
+  <div class="login-box">
+    <h2>🔐 Login</h2>
+    <input type="text" id="userid" placeholder="Enter 9-digit ID">
+    <button onclick="login()">Access</button>
+    <div class="error" id="error"></div>
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="app">
+  <header>📁 Drive Index</header>
+
+  <div class="container">
+    <input class="search" placeholder="Search files..." onkeyup="searchFiles(this.value)">
+
+    <!-- FOLDER -->
+    <div class="file" onclick="openLink('https://drive.google.com/drive/folders/1ul8ey5FeDV9ha4dzxXB9EzMXRnNabKQu')">
+      <div class="icon">📂</div>
+      <div class="name">My Drive Folder</div>
+      <div class="size">Folder</div>
+    </div>
+
+    <!-- FILES -->
+    <div class="file">
+      <div class="icon">🎬</div>
+      <div class="name" onclick="openLink('https://drive.google.com')">Movie.mp4</div>
+      <div class="size">1.4 GB</div>
+    </div>
+
+    <div class="file">
+      <div class="icon">📄</div>
+      <div class="name" onclick="openLink('https://drive.google.com')">Document.pdf</div>
+      <div class="size">2 MB</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function login() {
+  const id = document.getElementById("userid").value;
+  const error = document.getElementById("error");
+
+  const pattern = /^2500350\d{2}$/;
+
+  if (pattern.test(id)) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    error.textContent = "Invalid ID. Access denied.";
+  }
+}
+
+function openLink(url) {
+  window.open(url, "_blank");
+}
+
+function searchFiles(text) {
+  text = text.toLowerCase();
+  document.querySelectorAll(".file").forEach(file => {
+    const name = file.innerText.toLowerCase();
+    file.style.display = name.includes(text) ? "flex" : "none";
+  });
+}
+</script>
 
 </body>
+</html>
