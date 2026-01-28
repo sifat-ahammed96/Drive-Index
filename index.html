@@ -19,7 +19,7 @@ body {
   color:var(--text);
 }
 .hidden{display:none}
-.center{height:100vh;display:flex;justify-content:center;align-items:center}
+.center{height:100vh;display:flex;justify-content:center;align-items:center;position:fixed;top:0;left:0;width:100%;background:inherit;}
 .box{background:#020617;padding:30px;border-radius:15px;width:320px;text-align:center}
 input,button{
   width:100%;padding:12px;margin-bottom:12px;
@@ -41,6 +41,24 @@ nav li{cursor:pointer;color:white}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
 .card{background:var(--bg-card);padding:30px;border-radius:20px}
 .card h2{color:#38bdf8}
+
+/* ===== ADD START: new UI only ===== */
+.option-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+  margin-top:30px;
+}
+.option-card{
+  background:var(--bg-card);
+  padding:25px;
+  border-radius:18px;
+  cursor:pointer;
+}
+.option-card h3{color:#38bdf8}
+/* ===== ADD END ===== */
+
+
 </style>
 </head>
 
@@ -106,14 +124,50 @@ nav li{cursor:pointer;color:white}
     <h2 style="color:#22d3ee;margin-bottom:30px">Spring Semester 2026</h2>
 
     <div class="grid">
-      <div class="card"><h2>Data Science</h2></div>
-      <div class="card"><h2>Physics</h2></div>
-      <div class="card"><h2>Linear Algebra</h2></div>
-      <div class="card"><h2>Professional English</h2></div>
-      <div class="card"><h2>Physics Lab</h2></div>
-      <div class="card"><h2>Professional Life Skill Development</h2></div>
+      <div class="card"><h2>Data Science</h2>
+        <button>View Details</button></div>
+      <div class="card"><h2>Physics</h2>
+        <button>View Details</button></div>
+      <div class="card"><h2>Linear Algebra</h2>
+        <button>View Details</button></div>
+      <div class="card"><h2>Professional English</h2>
+        <button>View Details</button></div>
+      <div class="card"><h2>Physics Lab</h2>
+        <button>View Details</button></div>
+      <div class="card"><h2>Professional Life Skill Development</h2>
+        <button>View Details</button></div>
     </div>
   </div>
+
+  <!-- ===== ADD START: Course level ===== -->
+  <div id="courseView" class="hidden">
+    <button onclick="backToSemester()" style="background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
+      ← Back to Courses
+    </button>
+    <h2 id="courseTitle"></h2>
+    <div class="option-grid">
+      <div class="option-card" onclick="openExam('Mid-Term')">
+        <h3>Mid-Term</h3>
+        <button>View Details</button></div>
+      <div class="option-card" onclick="openExam('Final')"><h3>Final</h3>
+        <button>View Details</button></div>
+    </div>
+  </div>
+
+  <!-- ===== ADD START: Exam level ===== -->
+  <div id="examView" class="hidden">
+    <button onclick="backToCourse()" style="background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
+      ← Back
+    </button>
+    <h2 id="examTitle"></h2>
+    <div class="option-grid">
+      <div class="option-card" onclick="openDrive('materials')"><h3>📁 Class Materials</h3></div>
+      <div class="option-card" onclick="openDrive('resources')"><h3>📚 Resources</h3></div>
+      <div class="option-card" onclick="openDrive('ct')"><h3>❓ CT Questions</h3></div>
+    </div>
+  </div>
+  <!-- ===== ADD END ===== -->
+
 </div>
 
 <!-- PROFILE -->
@@ -241,11 +295,59 @@ async function doLogin(){
   showDashboard();
 })();
 
+showLogin();
+
 /* ---------- LOGOUT ---------- */
 function logout(){
   localStorage.removeItem("auth_session");
   location.reload();
 }
+
+/* ===== ADD START: 4-level logic (NO existing change) ===== */
+let currentCourse="", currentExam="";
+
+const driveLinks={
+  "Data Science":{ "Mid-Term":{materials:"https://drive.google.com/file/d/11H3XuTEg8UA7N1S49iC7B6tFyJKX7X8R",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+                  "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Physics":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+              "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Linear Algebra":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+                     "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Professional English":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+                            "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Physics Lab":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+                  "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Professional Life Skill Development":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
+                                          "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}}
+};
+
+document.querySelectorAll("#semester .grid .card").forEach(card=>{
+  card.addEventListener("click",()=>{
+    currentCourse=card.querySelector("h2").innerText.trim();
+    semester.classList.add("hidden");
+    courseView.classList.remove("hidden");
+    courseTitle.innerText=currentCourse;
+  });
+});
+
+function openExam(e){
+  currentExam=e;
+  courseView.classList.add("hidden");
+  examView.classList.remove("hidden");
+  examTitle.innerText=e;
+}
+function backToCourse(){
+  examView.classList.add("hidden");
+  courseView.classList.remove("hidden");
+}
+function backToSemester(){
+  courseView.classList.add("hidden");
+  semester.classList.remove("hidden");
+}
+function openDrive(t){
+  window.open(driveLinks[currentCourse][currentExam][t],"_blank");
+}
+/* ===== ADD END ===== */
 </script>
 
 </body>
