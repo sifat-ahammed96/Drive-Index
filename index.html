@@ -86,11 +86,46 @@ nav li{cursor:pointer;color:white}
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="container">
-  <div class="grid">
-    <div class="card">
-      <h2>Spring Semester 2026</h2>
+
+  <!-- SEMESTER LIST -->
+  <div id="semesterList">
+    <div class="grid">
+      <div class="card">
+        <h2>Spring Semester 2026</h2>
+        <button onclick="openSemester()">View Details</button>
+      </div>
     </div>
   </div>
+
+  <!-- COURSE LIST -->
+  <div id="semester" class="hidden">
+
+    <button onclick="goBack()" style="
+      background:#7c3aed;
+      color:white;
+      border:none;
+      padding:10px 20px;
+      border-radius:10px;
+      cursor:pointer;
+      margin-bottom:25px;">
+      ← Back to Semesters
+    </button>
+
+    <h2 style="color:#22d3ee; margin-bottom:30px;">
+      Spring Semester 2026
+    </h2>
+
+    <div class="grid">
+      <div class="card"><h2>Data Science</h2><button>View Details</button></div>
+      <div class="card"><h2>Physics</h2><button>View Details</button></div>
+      <div class="card"><h2>Linear Algebra</h2><button>View Details</button></div>
+      <div class="card"><h2>Professional English</h2><button>View Details</button></div>
+      <div class="card"><h2>Physics Lab</h2><button>View Details</button></div>
+      <div class="card"><h2>Professional Life Skill Development</h2><button>View Details</button></div>
+    </div>
+
+  </div>
+
 </div>
 
 <!-- PROFILE -->
@@ -116,42 +151,34 @@ nav li{cursor:pointer;color:white}
 
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
-const MASTER_PASSWORD = "ADMIN123"; // CHANGE THIS
+const MASTER_PASSWORD = "Sifat7438@";
 
-function showLogin(){
-  hideAll();
-  document.getElementById("login").style.display="flex";
+function showLogin(){ hideAll(); login.style.display="flex"; }
+function showRegister(){ hideAll(); register.style.display="flex"; }
+function showDashboard(){ hideAll(); app.style.display="block"; dashboard.style.display="block"; }
+function showProfile(){ hideAll(); app.style.display="block"; profile.style.display="block";
+  profileData.innerText = sessionStorage.user || "No profile data";
 }
-function showRegister(){
-  hideAll();
-  document.getElementById("register").style.display="flex";
-}
-function showDashboard(){
-  hideAll();
-  document.getElementById("app").style.display="block";
-  document.getElementById("dashboard").style.display="block";
-}
-function showProfile(){
-  hideAll();
-  document.getElementById("app").style.display="block";
-  document.getElementById("profile").style.display="block";
-  document.getElementById("profileData").innerText =
-    sessionStorage.user || "No profile data";
-}
-function showAdmin(){
-  hideAll();
-  document.getElementById("app").style.display="block";
-  document.getElementById("admin").style.display="block";
-}
+function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block"; }
+
 function hideAll(){
-  ["login","register","dashboard","profile","admin","app"]
-    .forEach(id=>{
-      const el=document.getElementById(id);
-      if(el) el.style.display="none";
-    });
+  ["login","register","dashboard","profile","admin","app"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display="none";
+  });
 }
 
-/* ---------- REGISTER ---------- */
+/* Semester toggle */
+function openSemester(){
+  semesterList.classList.add("hidden");
+  semester.classList.remove("hidden");
+}
+function goBack(){
+  semester.classList.add("hidden");
+  semesterList.classList.remove("hidden");
+}
+
+/* REGISTER */
 async function doRegister(){
   const res = await fetch(API+"/register",{
     method:"POST",
@@ -163,48 +190,42 @@ async function doRegister(){
     })
   });
   const data = await res.json();
-  document.getElementById("regResult").innerText =
-    data.otp ? "Your OTP: "+data.otp : JSON.stringify(data);
+  regResult.innerText = data.otp ? "Your OTP: "+data.otp : JSON.stringify(data);
 }
 
-/* ---------- LOGIN (NO PROMPT) ---------- */
+/* LOGIN */
 async function doLogin(){
-  const studentId = document.getElementById("loginId").value.trim();
-  const otp = document.getElementById("loginOtp").value.trim();
-  const errorBox = document.getElementById("loginError");
-
+  const studentId = loginId.value.trim();
+  const otp = loginOtp.value.trim();
   if(!studentId || !otp){
-    errorBox.innerText = "Student ID and Passcode required";
+    loginError.innerText="Student ID and Passcode required";
     return;
   }
-
   const res = await fetch(API+"/login",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({ studentId, otp })
   });
-
   const data = await res.json();
   if(!res.ok){
-    errorBox.innerText = data.error;
+    loginError.innerText=data.error;
     return;
   }
-
   alert("Login successful!\nNew Passcode: "+data.newOtp);
   sessionStorage.user = JSON.stringify({ studentId });
   showDashboard();
 }
 
-/* ---------- ADMIN ---------- */
+/* ADMIN */
 function adminReset(){
   if(adminPass.value!==MASTER_PASSWORD){
     adminResult.innerText="Wrong master password";
     return;
   }
-  adminResult.innerText="Reset via backend required (secure)";
+  adminResult.innerText="Reset via backend required";
 }
 
-/* --------- LOGOUT --------- */
+/* LOGOUT */
 function logout(){
   sessionStorage.clear();
   location.reload();
