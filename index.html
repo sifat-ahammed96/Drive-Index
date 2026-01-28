@@ -139,8 +139,9 @@ nav li{cursor:pointer;color:white}
 
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
-const MASTER_PASSWORD = "Sifat7438@";
+const SESSION_DURATION = 30 * 60 * 1000;
 
+/* ---------- NAV ---------- */
 function hideAll(){
   ["login","register","dashboard","profile","admin","app"]
   .forEach(id=>document.getElementById(id).style.display="none");
@@ -148,22 +149,26 @@ function hideAll(){
 function showLogin(){ hideAll(); login.style.display="flex"; }
 function showRegister(){ hideAll(); register.style.display="flex"; }
 function showDashboard(){ hideAll(); app.style.display="block"; dashboard.style.display="block"; }
+function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block"; }
 
+/* ---------- PROFILE ---------- */
 function showProfile(){
   hideAll();
   app.style.display="block";
   profile.style.display="block";
 
-  const user = JSON.parse(sessionStorage.user || "{}");
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  const user = session.user || {};
+
   profileData.innerHTML = `
     <strong style="font-size:22px">${user.name || "Unknown User"}</strong><br><br>
     Student ID: ${user.studentId || "-"}<br>
-    Email: ${user.email || "-"}
+    Email: ${user.email || "-"}<br><br>
+    <strong>Next Login Passcode:</strong> ${session.newOtp || "—"}
   `;
 }
 
-function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block"; }
-
+/* ---------- SEMESTER ---------- */
 function openSemester(){
   semesterList.classList.add("hidden");
   semester.classList.remove("hidden");
@@ -173,7 +178,7 @@ function goBack(){
   semesterList.classList.remove("hidden");
 }
 
-/* REGISTER */
+/* ---------- REGISTER ---------- */
 async function doRegister(){
   const name = regName.value.trim();
   const studentId = regId.value.trim();
@@ -188,17 +193,12 @@ async function doRegister(){
   const data = await res.json();
 
   if(data.otp){
-    localStorage.setItem(
-      "profile_"+studentId,
-      JSON.stringify({ name, studentId, email })
-    );
+    localStorage.setItem("profile_"+studentId, JSON.stringify({ name, studentId, email }));
     regResult.innerText = "Your OTP: "+data.otp;
-  } else {
-    regResult.innerText = JSON.stringify(data);
   }
 }
 
-/* LOGIN */
+/* ---------- LOGIN ---------- */
 async function doLogin(){
   const studentId = loginId.value.trim();
   const otp = loginOtp.value.trim();
@@ -219,24 +219,31 @@ async function doLogin(){
     return;
   }
 
-  const profile = localStorage.getItem("profile_"+studentId);
-  sessionStorage.user = profile || JSON.stringify({ studentId });
+  const profile = JSON.parse(localStorage.getItem("profile_"+studentId) || "{}");
 
-  alert("Login successful!\nNew Passcode: "+data.newOtp);
+  localStorage.setItem("auth_session", JSON.stringify({
+    user: profile,
+    newOtp: data.newOtp,
+    loginTime: Date.now()
+  }));
+
   showDashboard();
 }
 
-/* ADMIN */
-function adminReset(){
-  adminResult.innerText =
-    adminPass.value===MASTER_PASSWORD
-    ? "Reset via backend required"
-    : "Wrong master password";
-}
+/* ---------- AUTO LOGIN ---------- */
+(function autoLogin(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if(!session.loginTime) return;
+  if(Date.now() - session.loginTime > SESSION_DURATION){
+    localStorage.removeItem("auth_session");
+    return;
+  }
+  showDashboard();
+})();
 
-/* LOGOUT */
+/* ---------- LOGOUT ---------- */
 function logout(){
-  sessionStorage.clear();
+  localStorage.removeItem("auth_session");
   location.reload();
 }
 </script>
