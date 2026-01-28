@@ -51,7 +51,7 @@ nav li{cursor:pointer;color:white}
   <div class="box">
     <h2>🔐 Login</h2>
     <input id="loginId" placeholder="Student ID">
-    <button onclick="login()">Login</button>
+    <button onclick="doLogin()">Login</button>
     <p onclick="showRegister()" style="cursor:pointer;color:#38bdf8">Register</p>
     <div class="error" id="loginError"></div>
   </div>
@@ -64,7 +64,7 @@ nav li{cursor:pointer;color:white}
     <input id="regName" placeholder="Full Name">
     <input id="regId" placeholder="Student ID">
     <input id="regEmail" placeholder="Email">
-    <button onclick="register()">Register</button>
+    <button onclick="doRegister()">Register</button>
     <p onclick="showLogin()" style="cursor:pointer;color:#38bdf8">Back to Login</p>
     <div id="regResult"></div>
   </div>
@@ -115,24 +115,21 @@ nav li{cursor:pointer;color:white}
 
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
-const MASTER_PASSWORD = "ADMIN123"; // change this
+const MASTER_PASSWORD = "ADMIN123"; // CHANGE THIS
 
 function showLogin(){
   hideAll();
   document.getElementById("login").style.display="flex";
 }
-
 function showRegister(){
   hideAll();
   document.getElementById("register").style.display="flex";
 }
-
 function showDashboard(){
   hideAll();
   document.getElementById("app").style.display="block";
   document.getElementById("dashboard").style.display="block";
 }
-
 function showProfile(){
   hideAll();
   document.getElementById("app").style.display="block";
@@ -140,13 +137,11 @@ function showProfile(){
   document.getElementById("profileData").innerText =
     sessionStorage.user || "No profile data";
 }
-
 function showAdmin(){
   hideAll();
   document.getElementById("app").style.display="block";
   document.getElementById("admin").style.display="block";
 }
-
 function hideAll(){
   ["login","register","dashboard","profile","admin","app"]
     .forEach(id=>{
@@ -166,7 +161,6 @@ async function doRegister(){
       email:regEmail.value
     })
   });
-
   const data = await res.json();
   document.getElementById("regResult").innerText =
     data.otp ? "Your OTP: "+data.otp : JSON.stringify(data);
