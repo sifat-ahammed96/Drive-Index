@@ -7,257 +7,163 @@
 
 <style>
 :root {
-  --bg-dark: #0b1220;
-  --bg-card: #2a3445;
-  --green: #00c853;
-  --text: #e5e7eb;
+  --bg-dark:#0b1220;
+  --bg-card:#2a3445;
+  --green:#00c853;
+  --text:#e5e7eb;
 }
-
 body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: linear-gradient(180deg, #0b1220, #111827);
-  color: var(--text);
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:linear-gradient(180deg,#0b1220,#111827);
+  color:var(--text);
 }
+.hidden{display:none}
+.center{height:100vh;display:flex;justify-content:center;align-items:center}
+.box{background:#020617;padding:30px;border-radius:15px;width:320px;text-align:center}
+input,button{
+  width:100%;padding:12px;margin-bottom:12px;
+  border:none;border-radius:8px
+}
+button{background:var(--green);color:white;cursor:pointer}
+.error{color:#f87171;font-size:14px}
 
-/* ---------- LOGIN ---------- */
-#login {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+nav{
+  background:var(--green);
+  padding:15px 30px;
+  display:flex;justify-content:space-between;align-items:center
 }
+.logo{font-size:22px;font-weight:bold;color:white}
+nav ul{list-style:none;display:flex;gap:25px;margin:0;padding:0}
+nav li{cursor:pointer;color:white}
 
-.login-box {
-  background: #020617;
-  padding: 35px;
-  border-radius: 15px;
-  width: 320px;
-  text-align: center;
-}
-
-.login-box input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 15px;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: var(--green);
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.error {
-  color: #f87171;
-  font-size: 14px;
-}
-
-/* ---------- APP ---------- */
-#app {
-  display: none;
-}
-
-/* ---------- NAV ---------- */
-nav {
-  background: var(--green);
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  padding: 0;
-  margin: 0;
-}
-
-nav ul li {
-  color: white;
-  cursor: pointer;
-}
-
-.toggle {
-  background: #7c3aed;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* ---------- LAYOUT ---------- */
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-}
-
-.card {
-  background: var(--bg-card);
-  padding: 30px;
-  border-radius: 20px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.card h2 {
-  color: #38bdf8;
-  margin-bottom: 20px;
-}
-
-.card button {
-  background: var(--green);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-}
-
-/* ---------- SMOOTH TOGGLE ---------- */
-.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  height: 0;
-  overflow: hidden;
-}
-
-.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* ---------- LIGHT MODE ---------- */
-.light {
-  background: #f3f4f6;
-  color: #111827;
-}
-
-.light .card {
-  background: #e5e7eb;
-}
-
-.light nav {
-  background: #16a34a;
-}
+.container{max-width:1100px;margin:auto;padding:40px 20px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
+.card{background:var(--bg-card);padding:30px;border-radius:20px}
+.card h2{color:#38bdf8}
 </style>
 </head>
 
-<body id="body">
+<body>
 
 <!-- LOGIN -->
-<div id="login">
-  <div class="login-box">
+<div id="login" class="center">
+  <div class="box">
     <h2>🔐 Login</h2>
-    <input type="text" id="userid" placeholder="Enter 9-digit ID">
-    <button onclick="login()">Access</button>
-    <div class="error" id="error"></div>
+    <input id="loginId" placeholder="Student ID">
+    <button onclick="login()">Login</button>
+    <p onclick="showRegister()" style="cursor:pointer;color:#38bdf8">Register</p>
+    <div class="error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register" class="center hidden">
+  <div class="box">
+    <h2>📝 Register</h2>
+    <input id="regName" placeholder="Full Name">
+    <input id="regId" placeholder="Student ID">
+    <input id="regEmail" placeholder="Email">
+    <button onclick="register()">Register</button>
+    <p onclick="showLogin()" style="cursor:pointer;color:#38bdf8">Back to Login</p>
+    <div id="regResult"></div>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app">
+<div id="app" class="hidden">
 
 <nav>
   <div class="logo">ADS 250</div>
   <ul>
-    <li>Home</li>
-    <li>Class</li>
-    <li>Exam</li>
-    <li>Subjects</li>
+    <li onclick="showDashboard()">Home</li>
+    <li onclick="showProfile()">Profile</li>
+    <li onclick="showAdmin()">Admin</li>
+    <li onclick="logout()">Logout</li>
   </ul>
-  <div class="toggle" onclick="toggleMode()">Light Mode</div>
 </nav>
 
-<!-- SEMESTER LIST -->
-<div class="container visible" id="semesterList">
+<!-- DASHBOARD -->
+<div id="dashboard" class="container">
   <div class="grid">
     <div class="card">
       <h2>Spring Semester 2026</h2>
-      <button onclick="openSemester()">View Details</button>
     </div>
   </div>
 </div>
 
-<!-- COURSE LIST -->
-<div class="container hidden" id="semester">
-
-  <button onclick="goBack()" style="
-    background:#7c3aed;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:10px;
-    cursor:pointer;
-    margin-bottom:25px;">
-    ← Back to Semesters
-  </button>
-
-  <h2 style="color:#22d3ee; margin-bottom:30px;">
-    Spring Semester 2026
-  </h2>
-
-  <div class="grid">
-    <div class="card"><h2>Data Science</h2><button>View Details</button></div>
-    <div class="card"><h2>Physics</h2><button>View Details</button></div>
-    <div class="card"><h2>Linear Algebra</h2><button>View Details</button></div>
-    <div class="card"><h2>Professional English</h2><button>View Details</button></div>
-    <div class="card"><h2>Physics Lab</h2><button>View Details</button></div>
-    <div class="card"><h2>Professional Life Skill Development</h2><button>View Details</button></div>
+<!-- PROFILE -->
+<div id="profile" class="container hidden">
+  <div class="card">
+    <h2>👤 Profile</h2>
+    <p id="profileData"></p>
   </div>
-
 </div>
+
+<!-- ADMIN -->
+<div id="admin" class="container hidden">
+  <div class="card">
+    <h2>🔑 Admin Reset</h2>
+    <input id="adminPass" placeholder="Master Password">
+    <input id="adminId" placeholder="Student ID">
+    <button onclick="adminReset()">Reset OTP</button>
+    <p id="adminResult"></p>
+  </div>
+</div>
+
 </div>
 
 <script>
-function login() {
-  const id = document.getElementById("userid").value;
-  const pattern = /^2500350\d{2}$/;
+const API="https://ads-auth.sifatraj280.workers.dev";
+const MASTER_PASSWORD="ADMIN123"; // CHANGE THIS
 
-  if (pattern.test(id)) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "block";
-  } else {
-    document.getElementById("error").innerText = "Invalid ID";
+function showLogin(){hideAll();login.style.display="flex"}
+function showRegister(){hideAll();register.style.display="flex"}
+function showDashboard(){hideAll();app.style.display="block";dashboard.style.display="block"}
+function showProfile(){
+  hideAll();app.style.display="block";profile.style.display="block";
+  profileData.innerText=JSON.stringify(JSON.parse(sessionStorage.user),null,2)
+}
+function showAdmin(){hideAll();app.style.display="block";admin.style.display="block"}
+
+function hideAll(){
+  login.style.display=register.style.display="none";
+  dashboard.style.display=profile.style.display=admin.style.display="none";
+}
+
+async function register(){
+  const res=await fetch(API+"/register",{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    name:regName.value,
+    studentId:regId.value,
+    email:regEmail.value
+  })});
+  const data=await res.json();
+  regResult.innerText="OTP: "+data.otp;
+}
+
+async function login(){
+  const otp=prompt("Enter OTP");
+  const res=await fetch(API+"/login",{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({studentId:loginId.value,otp})});
+  const data=await res.json();
+  if(!res.ok){loginError.innerText=data.error;return}
+  alert("New OTP: "+data.newOtp);
+  sessionStorage.user=JSON.stringify({id:loginId.value});
+  showDashboard();
+}
+
+function logout(){
+  sessionStorage.clear();
+  location.reload();
+}
+
+function adminReset(){
+  if(adminPass.value!==MASTER_PASSWORD){
+    adminResult.innerText="Wrong master password";
+    return;
   }
-}
-
-function openSemester() {
-  document.getElementById("semesterList").classList.replace("visible", "hidden");
-  document.getElementById("semester").classList.replace("hidden", "visible");
-}
-
-function goBack() {
-  document.getElementById("semester").classList.replace("visible", "hidden");
-  document.getElementById("semesterList").classList.replace("hidden", "visible");
-}
-
-function toggleMode() {
-  document.getElementById("body").classList.toggle("light");
+  adminResult.innerText="Manual reset required in KV (backend secure)";
 }
 </script>
 
