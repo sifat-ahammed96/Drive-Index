@@ -51,7 +51,8 @@ nav li{cursor:pointer;color:white}
   <div class="box">
     <h2>🔐 Login</h2>
     <input id="loginId" placeholder="Student ID">
-    <button onclick="doLogin()">Login</button>
+    <input id="loginOtp" placeholder="Passcode" type="password">
+    <button onclick="doLogin()">Log in</button>
     <p onclick="showRegister()" style="cursor:pointer;color:#38bdf8">Register</p>
     <div class="error" id="loginError"></div>
   </div>
@@ -74,7 +75,7 @@ nav li{cursor:pointer;color:white}
 <div id="app" class="hidden">
 
 <nav>
-  <div class="logo">ADS 250</div>
+  <div class="logo">Artificial Intelligence and Data Science</div>
   <ul>
     <li onclick="showDashboard()">Home</li>
     <li onclick="showProfile()">Profile</li>
@@ -166,11 +167,16 @@ async function doRegister(){
     data.otp ? "Your OTP: "+data.otp : JSON.stringify(data);
 }
 
-/* ---------- LOGIN ---------- */
+/* ---------- LOGIN (NO PROMPT) ---------- */
 async function doLogin(){
-  const studentId = loginId.value;
-  const otp = prompt("Enter your 6-digit OTP");
-  if(!otp) return;
+  const studentId = document.getElementById("loginId").value.trim();
+  const otp = document.getElementById("loginOtp").value.trim();
+  const errorBox = document.getElementById("loginError");
+
+  if(!studentId || !otp){
+    errorBox.innerText = "Student ID and Passcode required";
+    return;
+  }
 
   const res = await fetch(API+"/login",{
     method:"POST",
@@ -180,11 +186,11 @@ async function doLogin(){
 
   const data = await res.json();
   if(!res.ok){
-    document.getElementById("loginError").innerText=data.error;
+    errorBox.innerText = data.error;
     return;
   }
 
-  alert("Login successful!\nNew OTP: "+data.newOtp);
+  alert("Login successful!\nNew Passcode: "+data.newOtp);
   sessionStorage.user = JSON.stringify({ studentId });
   showDashboard();
 }
