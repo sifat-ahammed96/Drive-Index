@@ -15,14 +15,35 @@
 body {
   margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
-  background:linear-gradient(180deg,#0b1220,#111827);
+  background: linear-gradient(90deg, #0b1220 0%, #0b1220 40%, #111827 100%);
+
   color:var(--text);
 }
 .hidden{display:none}
-.center{height:100vh;display:flex;justify-content:center;align-items:center;position:fixed;top:0;left:0;width:100%;background:inherit;}
-.box{background:#020617;padding:30px;border-radius:15px;width:320px;text-align:center}
+.center{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:inherit;
+}
+.box{
+  background:#020617;
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  max-width:400px;
+  width:100%;
+  text-align:center;
+  margin:0 auto;
+  box-sizing:border-box;
+}
 input,button{
-  width:100%;padding:12px;margin-bottom:12px;
+  width:80%;padding:12px;margin-bottom:12px;
   border:none;border-radius:8px
 }
 button{background:var(--green);color:white;cursor:pointer}
@@ -57,6 +78,139 @@ nav li{cursor:pointer;color:white}
 }
 .option-card h3{color:#38bdf8}
 /* ===== ADD END ===== */
+
+@keyframes fadeIn {
+  from { opacity:0; transform:scale(0.98); }
+  to   { opacity:1; transform:scale(1); }
+}
+
+.center,
+.container{
+  animation: fadeIn 0.35s ease-in-out;
+}
+
+.card,
+.option-card{
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover,
+.option-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(144, 13, 13, 0.3);
+}
+
+.fade{
+  animation: fadeIn 0.35s ease-in-out;
+}
+
+/* ===== Back button animation ===== */
+.back-btn,
+button[onclick^="goBack"],
+button[onclick^="back"]{
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-btn:hover,
+button[onclick^="goBack"]:hover,
+button[onclick^="back"]:hover{
+  transform: translateX(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+.back-btn:active,
+button[onclick^="goBack"]:active,
+button[onclick^="back"]:active{
+  transform: scale(0.95);
+}
+
+/* Login & Register buttons animation */
+#login button,
+#register button{
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#login button:hover,
+#register button:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+#login button:active,
+#register button:active{
+  transform: scale(0.95);
+}
+
+/* Login/Register text link animation */
+#login p,
+#register p{
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#login p:hover,
+#register p:hover{
+  transform: translateX(4px);
+  color:#7dd3fc;
+}
+
+.card:hover,
+.option-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ===== Login & Register input focus animation ===== */
+#login input,
+#register input{
+  transition: 
+    border 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease,
+    background 0.25s ease;
+}
+
+#login input:focus,
+#register input:focus{
+  outline:none;
+  border:2px solid #38bdf8;
+  background:#020617;
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
+  transform: scale(1.03);
+}
+
+/* ===== Fix input text visibility ===== */
+#login input,
+#register input{
+  color: #e5e7eb;        /* typed text color */
+  caret-color: #38bdf8; /* blinking cursor color */
+}
+
+#login input::placeholder,
+#register input::placeholder{
+  color: #9ca3af;       /* placeholder color */
+}
+/* ===== FINAL INPUT STYLE FIX (Login & Register) ===== */
+#login input,
+#register input{
+  background:#ffffff !important;
+  color:#111827 !important;
+  caret-color:#22d3ee;
+  border:2px solid transparent;
+  font-size:15px;
+}
+
+#login input::placeholder,
+#register input::placeholder{
+  color:#6b7280 !important;
+}
+
+#login input:focus,
+#register input:focus{
+  outline:none;
+  border:2px solid #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
+  transform: scale(1.03);
+}
 
 
 </style>
@@ -103,7 +257,7 @@ nav li{cursor:pointer;color:white}
 </nav>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="container">
+<div id="dashboard" class="container fade">
 
   <div id="semesterList">
     <div class="grid">
@@ -114,7 +268,7 @@ nav li{cursor:pointer;color:white}
     </div>
   </div>
 
-  <div id="semester" class="hidden">
+  <div id="semester" class="hidden fade">
     <button onclick="goBack()" style="
       background:#7c3aed;color:white;border:none;
       padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
@@ -140,7 +294,7 @@ nav li{cursor:pointer;color:white}
   </div>
 
   <!-- ===== ADD START: Course level ===== -->
-  <div id="courseView" class="hidden">
+  <div id="courseView" class="hidden fade">
     <button onclick="backToSemester()" style="background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
       ← Back to Courses
     </button>
@@ -155,7 +309,7 @@ nav li{cursor:pointer;color:white}
   </div>
 
   <!-- ===== ADD START: Exam level ===== -->
-  <div id="examView" class="hidden">
+  <div id="examView" class="hidden fade">
     <button onclick="backToCourse()" style="background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
       ← Back
     </button>
@@ -171,7 +325,7 @@ nav li{cursor:pointer;color:white}
 </div>
 
 <!-- PROFILE -->
-<div id="profile" class="container hidden">
+<div id="profile" class="container hidden fade">
   <div class="card">
     <h2>👤 Profile</h2>
     <div id="profileData"></div>
@@ -179,7 +333,7 @@ nav li{cursor:pointer;color:white}
 </div>
 
 <!-- ADMIN -->
-<div id="admin" class="container hidden">
+<div id="admin" class="container hidden fade">
   <div class="card">
     <h2>🔑 Admin Reset</h2>
     <input id="adminPass" placeholder="Master Password">
