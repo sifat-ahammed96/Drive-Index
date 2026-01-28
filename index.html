@@ -8,7 +8,6 @@
 <link rel="shortcut icon" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 </head>
-  
 <style>
 :root {
   --bg-dark:#0b1220;
@@ -16,12 +15,16 @@
   --green:#00c853;
   --text:#e5e7eb;
 }
+
 body {
   margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
   background: linear-gradient(90deg, #0b1220 0%, #0b1220 40%, #111827 100%);
 
   color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 .hidden{display:none}
 .center{
@@ -216,6 +219,87 @@ button[onclick^="back"]:active{
   transform: scale(1.03);
 }
 
+/* ===== NAVBAR ANIMATION ===== */
+
+/* Navbar slide down */
+nav{
+  animation: navSlide 0.6s ease-out;
+}
+
+@keyframes navSlide{
+  from{
+    transform: translateY(-100%);
+    opacity:0;
+  }
+  to{
+    transform: translateY(0);
+    opacity:1;
+  }
+}
+
+/* Logo pulse on load */
+.logo{
+  animation: logoPop 0.6s ease-out 0.3s both;
+}
+
+@keyframes logoPop{
+  from{
+    transform: scale(0.8);
+    opacity:0;
+  }
+  to{
+    transform: scale(1);
+    opacity:1;
+  }
+}
+
+/* Menu items hover animation */
+nav li{
+  position:relative;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+nav li:hover{
+  transform: translateY(-3px);
+  opacity:0.9;
+}
+
+/* Underline effect */
+nav li::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:2px;
+  background:white;
+  transition: width 0.3s ease;
+}
+
+nav li:hover::after{
+  width:100%;
+}
+
+#app{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+#dashboard{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.simple-footer{
+  margin-top:290px;
+  padding: 15px 0;
+  font-size:15px;
+  color:#9ca3af;
+  text-align:center;
+    background:var(--bg-dark);
+}
 
 </style>
 </head>
@@ -261,9 +345,9 @@ button[onclick^="back"]:active{
 </nav>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="container fade">
-
-  <div id="semesterList">
+<div id="dashboard" class="fade">
+  <div class="container">
+    <div id="semesterList">
     <div class="grid">
       <div class="card">
         <h2>Spring Semester 2026</h2>
@@ -323,9 +407,11 @@ button[onclick^="back"]:active{
       <div class="option-card" onclick="openDrive('resources')"><h3>📚 Resources</h3></div>
       <div class="option-card" onclick="openDrive('ct')"><h3>❓ CT Questions</h3></div>
     </div>
+</div>
+  <div id="simpleFooter" class="simple-footer">
+    © 2026 ADS 250 | Home
   </div>
   <!-- ===== ADD END ===== -->
-
 </div>
 
 <!-- PROFILE -->
@@ -360,7 +446,7 @@ function hideAll(){
 }
 function showLogin(){ hideAll(); login.style.display="flex"; }
 function showRegister(){ hideAll(); register.style.display="flex"; }
-function showDashboard(){ hideAll(); app.style.display="block"; dashboard.style.display="block"; }
+function showDashboard(){ hideAll(); app.style.display="block"; dashboard.style.display="block"; updateFooter("All rights reserved"); }
 function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block"; }
 
 /* ---------- PROFILE ---------- */
@@ -384,10 +470,12 @@ function showProfile(){
 function openSemester(){
   semesterList.classList.add("hidden");
   semester.classList.remove("hidden");
+  updateFooter("Spring Semester 2026");
 }
 function goBack(){
   semester.classList.add("hidden");
   semesterList.classList.remove("hidden");
+  updateFooter("Home");
 }
 
 /* ---------- REGISTER ---------- */
@@ -453,7 +541,27 @@ async function doLogin(){
   showDashboard();
 })();
 
-showLogin();
+(function initApp(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+
+  // session নাই → login দেখাও
+  if(!session.loginTime){
+    showLogin();
+    updateFooter("Home");
+    return;
+  }
+
+  // session expired → login দেখাও
+  if(Date.now() - session.loginTime > SESSION_DURATION){
+    localStorage.removeItem("auth_session");
+    showLogin();
+    return;
+  }
+
+  // session valid → dashboard
+  showDashboard();
+})();
+
 
 /* ---------- LOGOUT ---------- */
 function logout(){
@@ -485,6 +593,7 @@ document.querySelectorAll("#semester .grid .card").forEach(card=>{
     semester.classList.add("hidden");
     courseView.classList.remove("hidden");
     courseTitle.innerText=currentCourse;
+    updateFooter(currentCourse);
   });
 });
 
@@ -493,18 +602,31 @@ function openExam(e){
   courseView.classList.add("hidden");
   examView.classList.remove("hidden");
   examTitle.innerText=e;
+  updateFooter(currentCourse + " / " + e);
 }
 function backToCourse(){
   examView.classList.add("hidden");
   courseView.classList.remove("hidden");
+  updateFooter(currentCourse);
 }
 function backToSemester(){
   courseView.classList.add("hidden");
   semester.classList.remove("hidden");
+  updateFooter("Spring Semester 2026");
 }
 function openDrive(t){
   window.open(driveLinks[currentCourse][currentExam][t],"_blank");
 }
+
+function updateFooter(text){
+  console.log("FOOTER UPDATE:", text);
+
+  const footer = document.getElementById("simpleFooter"); // 🔥 FIX
+  if(footer){
+    footer.innerText = "© 2026 ADS 250 | " + text;
+  }
+}
+
 /* ===== ADD END ===== */
 </script>
 
