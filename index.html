@@ -303,6 +303,7 @@ nav li:hover::after{
     <input id="regName" placeholder="Full Name">
     <input id="regId" placeholder="Student ID">
     <input id="regEmail" placeholder="Email">
+    <input id="regMaster" placeholder="Admin Master Password" type="password">
     <button onclick="doRegister()">Register</button>
     <p onclick="showLogin()" style="cursor:pointer;color:#38bdf8">Back to Login</p>
     <div id="regResult"></div>
@@ -457,23 +458,35 @@ function goBack(){
 
 /* ---------- REGISTER ---------- */
 async function doRegister(){
+
   const name = regName.value.trim();
   const studentId = regId.value.trim();
   const email = regEmail.value.trim();
-
-  const res = await fetch(API+"/register",{
+  const masterPassword = regMaster.value.trim(); // 🔐 NEW LINE
+  if(!name || !studentId || !email || !masterPassword){
+    regResult.innerText = "All fields + master password required";
+    return;
+  }
+  const res = await fetch(API + "/register",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ name, studentId, email })
+    body:JSON.stringify({
+      name,
+      studentId,
+      email,
+      masterPassword   // 🔐 NEW
+    })
   });
-
   const data = await res.json();
-
-  if(data.otp){
-    localStorage.setItem("profile_"+studentId, JSON.stringify({ name, studentId, email }));
-    regResult.innerText = "Your OTP: "+data.otp;
+  if(!res.ok){
+    regResult.innerText = data.error || "Registration blocked";
+    return;
   }
+  localStorage.setItem("profile_"+studentId,
+    JSON.stringify({ name, studentId, email }));
+  regResult.innerText = "OTP: " + data.otp;
 }
+
 
 /* ---------- LOGIN ---------- */
 async function doLogin(){
