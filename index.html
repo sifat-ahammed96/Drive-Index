@@ -584,6 +584,36 @@ function updateFooter(text){
     footer.innerText = "© 2026 ADS 250 | " + text;
   }
 }
+
+/* ---------- ADMIN RESET OTP ---------- */
+async function adminReset(){
+  const masterPassword = adminPass.value.trim();
+  const studentId = adminId.value.trim();
+  if(!masterPassword || !studentId){
+    adminResult.innerText = "Enter master password and student ID";
+    return;
+  }
+  try{
+    const res = await fetch(API + "/admin-reset", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        masterPassword,
+        studentId
+      })
+    });
+    const data = await res.json();
+    if(!res.ok){
+      adminResult.innerText = data.error || "Reset failed";
+      return;
+    }
+    adminResult.innerText = "New OTP: " + data.newOtp;
+  }catch(err){
+    adminResult.innerText = "Server error";
+    console.error(err);
+  }
+}
+
 /* ===== ADD END ===== */
 </script>
 
