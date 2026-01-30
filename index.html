@@ -402,13 +402,23 @@ nav li:hover::after{
 <!-- ADMIN -->
 <div id="admin" class="container hidden fade">
   <div class="card">
-    <h2>🔑 Admin Reset</h2>
-    <input id="adminPass" placeholder="Master Password">
-    <input id="adminId" placeholder="Student ID">
-    <button onclick="adminReset()">Reset OTP</button>
-    <input id="staticPass" placeholder="Static Password">
-    <button onclick="setStatic()">Set Static Password</button>
-    <button onclick="unsetStatic()">Disable Static Password</button>
+
+    <h2>🔑 Admin Panel</h2>
+
+    <!-- ADMIN UNLOCK -->
+    <div id="adminUnlock">
+      <input id="adminMasterLogin" placeholder="Enter Master Password" type="password">
+      <button onclick="unlockAdmin()">Unlock Admin Panel</button>
+    </div>
+
+    <!-- ADMIN TOOLS -->
+    <div id="adminTools" class="hidden">
+      <input id="adminId" placeholder="Student ID">
+      <button onclick="adminReset()">Reset OTP</button>
+      <input id="staticPass" placeholder="Static Password">
+      <button onclick="setStatic()">Set Static Password</button>
+      <button onclick="unsetStatic()">Disable Static Password</button>
+    </div>
     <p id="adminResult"></p>
   </div>
 </div>
@@ -603,7 +613,7 @@ function updateFooter(text){
 
 /* ---------- ADMIN RESET OTP ---------- */
 async function adminReset(){
-  const masterPassword = adminPass.value.trim();
+  const masterPassword = adminSessionPass;
   const studentId = adminId.value.trim();
   if(!masterPassword || !studentId){
     adminResult.innerText = "Enter master password and student ID";
@@ -632,7 +642,7 @@ async function adminReset(){
 
 async function setStatic(){
   const studentId = adminId.value.trim();
-  const masterPassword = adminPass.value.trim();
+  const masterPassword = adminSessionPass;
   const staticPassword = staticPass.value.trim();
 
   if(!studentId || !masterPassword || !staticPassword){
@@ -655,7 +665,8 @@ async function setStatic(){
 }
 async function unsetStatic(){
   const studentId = adminId.value.trim();
-  const masterPassword = adminPass.value.trim();
+  const masterPassword = adminSessionPass;
+
 
   if(!studentId || !masterPassword){
     adminResult.innerText = "Student ID + master password required";
@@ -674,7 +685,52 @@ async function unsetStatic(){
   const data = await res.json();
   adminResult.innerText = data.message || data.error;
 }
+let adminSessionPass = null;
 
+function unlockAdmin(){
+  const pass = adminMasterLogin.value.trim();
+  if(!pass){
+    adminResult.innerText = "Enter master password";
+    return;
+  }
+
+  // simple frontend unlock
+  adminSessionPass = pass;
+
+  adminUnlock.classList.add("hidden");
+  adminTools.classList.remove("hidden");
+
+  adminResult.innerText = "Admin panel unlocked";
+}
+
+/* ===== ENTER KEY SUPPORT ===== */
+
+// login enter
+if (typeof loginOtp !== "undefined") {
+  loginOtp.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      doLogin();
+    }
+  });
+}
+
+// admin unlock enter
+if (typeof adminMasterLogin !== "undefined") {
+  adminMasterLogin.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      unlockAdmin();
+    }
+  });
+}
+
+// register enter
+if (typeof regMaster !== "undefined") {
+  regMaster.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      doRegister();
+    }
+  });
+}
 
 /* ===== ADD END ===== */
 </script>
