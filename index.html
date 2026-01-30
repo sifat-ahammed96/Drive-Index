@@ -522,7 +522,11 @@ async function doLogin(){
     return;
   }
 
-  const profile = JSON.parse(localStorage.getItem("profile_"+studentId) || "{}");
+  const profile = {
+  name: data.name,
+  studentId,
+  email: data.email
+};
 
   localStorage.setItem("auth_session", JSON.stringify({
     user: profile,
