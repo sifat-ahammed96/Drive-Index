@@ -406,6 +406,9 @@ nav li:hover::after{
     <input id="adminPass" placeholder="Master Password">
     <input id="adminId" placeholder="Student ID">
     <button onclick="adminReset()">Reset OTP</button>
+    <input id="staticPass" placeholder="Static Password">
+    <button onclick="setStatic()">Set Static Password</button>
+    <button onclick="unsetStatic()">Disable Static Password</button>
     <p id="adminResult"></p>
   </div>
 </div>
@@ -626,6 +629,52 @@ async function adminReset(){
     console.error(err);
   }
 }
+
+async function setStatic(){
+  const studentId = adminId.value.trim();
+  const masterPassword = adminPass.value.trim();
+  const staticPassword = staticPass.value.trim();
+
+  if(!studentId || !masterPassword || !staticPassword){
+    adminResult.innerText = "Fill all fields";
+    return;
+  }
+
+  const res = await fetch(API + "/admin-set-static", {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify({
+      studentId,
+      masterPassword,
+      staticPassword
+    })
+  });
+
+  const data = await res.json();
+  adminResult.innerText = data.message || data.error;
+}
+async function unsetStatic(){
+  const studentId = adminId.value.trim();
+  const masterPassword = adminPass.value.trim();
+
+  if(!studentId || !masterPassword){
+    adminResult.innerText = "Student ID + master password required";
+    return;
+  }
+
+  const res = await fetch(API + "/admin-unset-static", {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify({
+      studentId,
+      masterPassword
+    })
+  });
+
+  const data = await res.json();
+  adminResult.innerText = data.message || data.error;
+}
+
 
 /* ===== ADD END ===== */
 </script>
