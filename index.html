@@ -479,6 +479,7 @@ nav li:hover::after{
   <ul>
     <li onclick="showDashboard()">Home</li>
     <li onclick="showProfile()">Profile</li>
+    <li onclick="showSpecialProgram()">Special Program</li>
     <li onclick="showAdmin()">Admin</li>
     <li onclick="logout()">Logout</li>
   </ul>
@@ -524,6 +525,7 @@ nav li:hover::after{
     </div>
   </div>
 
+
   <!-- ===== ADD START: Course level ===== -->
   <div id="courseView" class="hidden fade">
     <button onclick="backToSemester()" style="background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:25px;">
@@ -551,8 +553,55 @@ nav li:hover::after{
       <div class="option-card" onclick="openDrive('ct')"><h3>❓ CT Questions</h3></div>
     </div>
   </div>
-  <!-- ===== ADD END ===== -->
 
+
+</div>
+
+<!-- SPECIAL PROGRAM -->
+<div id="specialProgram" class="container hidden fade">
+  <button onclick="backToDashboard()" style="
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;">
+    ← Back
+  </button>
+  <h2 style="color:#22d3ee;margin-bottom:30px">
+    Special Program
+  </h2>
+  <div class="grid">
+    <div class="card" onclick="openSpecialCourse('Computer Programming')">
+      <h2>Computer Programming</h2>
+      <button>View Details</button>
+    </div>
+  </div>
+</div>
+<!-- SPECIAL PROGRAM COURSE VIEW -->
+<div id="specialCourseView" class="container hidden fade">
+  <button onclick="backToSpecialProgram()" style="
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;">
+    ← Back
+  </button>
+  <h2 id="specialCourseTitle" style="color:#22d3ee;margin-bottom:30px">
+    Computer Programming
+  </h2>
+  <div class="option-grid">
+    <div class="option-card" onclick="openSpecialDrive('materials')">
+      <h3>📁 Class Materials</h3>
+    </div>
+    <div class="option-card" onclick="openSpecialDrive('resources')">
+      <h3>📚 Resources</h3>
+    </div>
+  </div>
 </div>
 
 <!-- PROFILE -->
@@ -595,7 +644,7 @@ const SESSION_DURATION = 30 * 60 * 1000;
 
 /* ---------- NAV ---------- */
 function hideAll(){
-  ["login","register","dashboard","profile","admin","app"]
+  ["login","register","dashboard","specialProgram","specialCourseView","profile","admin","app"]
   .forEach(id=>document.getElementById(id).style.display="none");
 }
 function showLogin(){ hideAll(); login.style.display="flex"; }
@@ -914,6 +963,36 @@ function updateWelcomeName(){
   if(el){
     el.innerText = "Welcome back, " + name + " 👋";
   }
+}
+function showSpecialProgram(){
+  hideAll();
+  app.style.display = "block";
+  specialProgram.style.display = "block";
+  updateFooter("Special Program");
+}
+function openSpecialCourse(courseName){
+  hideAll();
+  app.style.display = "block";
+  specialCourseView.style.display = "block";
+  specialCourseTitle.innerText = courseName;
+  updateFooter(courseName);
+}
+function backToSpecialProgram(){
+  hideAll();
+  app.style.display = "block";
+  specialProgram.style.display = "block";
+  updateFooter("Special Program");
+}
+const specialDriveLinks = {
+  materials: "PASTE_CLASS_MATERIALS_DRIVE_LINK",
+  resources: "PASTE_RESOURCES_DRIVE_LINK"
+};
+function openSpecialDrive(type){
+  window.open(specialDriveLinks[type], "_blank");
+}
+function backToDashboard(){
+  document.getElementById("specialProgram").style.display = "none";
+  showDashboard();
 }
 
 /* ===== ADD END ===== */
