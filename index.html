@@ -446,9 +446,7 @@ nav li:hover::after{
     <div class="brand-title">AI & DATA SCIENCE</div>
     <div class="brand-sub">ADS 250</div>
   </div>
-
   <img src="gublogo.png" class="brand-logo brand-logo-right">
-
 </div>
     <h2>🔐 Login Portal</h2>
     <input id="loginId" placeholder="Student ID">
@@ -734,18 +732,18 @@ function logout(){
 let currentCourse="", currentExam="";
 
 const driveLinks={
-  "Data Science":{ "Mid-Term":{materials:"https://drive.google.com/file/d/11H3XuTEg8UA7N1S49iC7B6tFyJKX7X8R",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
-                  "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
-  "Physics":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
-              "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
-  "Linear Algebra":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
-                     "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
-  "Professional English":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
-                            "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
+  "Data Science":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1Xp9ExGdaMFP-tEDOcXe_nMFQNx-qf9ff",resources:"https://drive.google.com/drive/folders/1me-kPCjlg2lkYhMt8nIo1Sb_9-V8GFgt",ct:"https://drive.google.com/XXXX"},
+                  "Final":{materials:"https://drive.google.com/drive/folders/1g9ZWYrxDFp6cN9Tl_oAjFmdHbo0i9yGn",resources:"https://drive.google.com/drive/folders/1fNsP-UVGRA-jAo0Iq0wKjpwI3q9qaNz0",ct:"https://drive.google.com/XXXX"}},
+  "Physics":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1mWdjn-bPRfhfNVMLn99AE-7iZlPYXR8J",resources:"https://drive.google.com/drive/folders/1EHVW1fpej1KGaZpPdOQgdIHxKcgM4b5D",ct:"https://drive.google.com/XXXX"},
+              "Final":{materials:"https://drive.google.com/drive/folders/1en4CruG9nBhXwK9MltiY82j_GMntye2L",resources:"https://drive.google.com/drive/folders/1_qGAkiH5Vf_U7GZcO2JyJFrkXVaXiyGO",ct:"https://drive.google.com/XXXX"}},
+  "Linear Algebra":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1KlMnxFWVkcIhd66BUvlohIOc9b1N953Q",resources:"https://drive.google.com/drive/folders/1G6T40uJsXDQA7Ermli5ThOAIvrZgle-g",ct:"https://drive.google.com/XXXX"},
+                     "Final":{materials:"https://drive.google.com/drive/folders/1tbdu7TPKU0w03GbssICQamYrXPIGVhzu",resources:"https://drive.google.com/drive/folders/1j4tChwBkQd6p3UGiT1lQJbmUfO4YsACm",ct:"https://drive.google.com/XXXX"}},
+  "Professional English":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1OMMcheIQK8A2BB7KzX9QqNnjAjKrc8OM",resources:"https://drive.google.com/drive/folders/16qp3S_Sx-axHmDkvUoGgME4NORZqQw81",ct:"https://drive.google.com/XXXX"},
+                            "Final":{materials:"https://drive.google.com/drive/folders/16pan3rzXkFE1KQ-6qNviaD4vryvbIxZX",resources:"https://drive.google.com/drive/folders/1VTYy4SxTPG8FvHCgWIPbzy4SQKjkHNDu",ct:"https://drive.google.com/XXXX"}},
   "Physics Lab":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
                   "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}},
-  "Professional Life Skill Development":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"},
-                                          "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX",ct:"https://drive.google.com/XXXX"}}
+  "Professional Life Skill Development":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1A8NQ2uzFXIplFlfdqhyZILat6IqcuY5P",resources:"https://drive.google.com/drive/folders/1RZgT4L_K-eBdDkDTCFsWXM2KZMHdkDEc",ct:"https://drive.google.com/XXXX"},
+                                          "Final":{materials:"https://drive.google.com/drive/folders/1ncRDAClQSUpt-XKxxyKCJDLo5OTRwPDS",resources:"https://drive.google.com/drive/folders/15vVAgmELPG78JoZXSYw8M9uWFec4khsk",ct:"https://drive.google.com/XXXX"}}
 };
 
 document.querySelectorAll("#semester .grid .card").forEach(card=>{
