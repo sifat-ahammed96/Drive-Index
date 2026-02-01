@@ -462,9 +462,9 @@ nav li:hover::after{
   <div class="box">
     <h2>📝 Registration Portal</h2>
     <input id="regName" placeholder="Full Name">
-    <input id="regId" placeholder="Student ID">
-    <input id="regEmail" placeholder="Email">
-    <input id="regMaster" placeholder="Admin Master Password" type="password">
+    <input id="regId" type="number" placeholder="Student ID">
+    <input id="regEmail" type="email" placeholder="Email">
+
     <button onclick="doRegister()">Register</button>
     <p onclick="showLogin()" style="cursor:pointer;color:#38bdf8">Back to Login</p>
     <div id="regResult"></div>
@@ -626,6 +626,8 @@ nav li:hover::after{
 
     <!-- ADMIN TOOLS -->
     <div id="adminTools" class="hidden">
+      <h3>Pending Registrations</h3>
+      <div id="pendingList"></div>
       <input id="adminId" placeholder="Student ID">
       <button onclick="adminReset()">Reset OTP</button>
       <input id="staticPass" placeholder="Static Password">
@@ -691,35 +693,42 @@ function goBack(){
 
 /* ---------- REGISTER ---------- */
 async function doRegister(){
-
   const name = regName.value.trim();
   const studentId = regId.value.trim();
   const email = regEmail.value.trim();
-  const masterPassword = regMaster.value.trim(); // 🔐 NEW LINE
-  if(!name || !studentId || !email || !masterPassword){
-    regResult.innerText = "All fields + master password required";
+  // empty check
+  if (!name || !studentId || !email) {
+    regResult.innerText = "All fields are required";
     return;
   }
-  const res = await fetch(API + "/register",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
+  // Student ID must be integer
+  if (!/^\d+$/.test(studentId)) {
+    regResult.innerText = "Student ID must be a valid number";
+    return;
+  }
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    regResult.innerText = "Please enter a valid email address";
+    return;
+  }
+  const res = await fetch(API + "/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       name,
       studentId,
-      email,
-      masterPassword   // 🔐 NEW
+      email
     })
   });
   const data = await res.json();
-  if(!res.ok){
-    regResult.innerText = data.error || "Registration blocked";
+  if (!res.ok) {
+    regResult.innerText = data.error || "Registration failed";
     return;
   }
-  localStorage.setItem("profile_"+studentId,
-    JSON.stringify({ name, studentId, email }));
-  regResult.innerText = "OTP: " + data.otp;
+  regResult.innerText =
+    "Registration submitted. Waiting for admin approval.";
 }
-
 
 /* ---------- LOGIN ---------- */
 async function doLogin(){
@@ -913,18 +922,22 @@ let adminSessionPass = null;
 
 function unlockAdmin(){
   const pass = adminMasterLogin.value.trim();
+
   if(!pass){
     adminResult.innerText = "Enter master password";
     return;
   }
 
-  // simple frontend unlock
+  // save admin password for session
   adminSessionPass = pass;
 
   adminUnlock.classList.add("hidden");
   adminTools.classList.remove("hidden");
 
   adminResult.innerText = "Admin panel unlocked";
+
+  // ✅ THIS WAS MISSING
+  loadPendingUsers();
 }
 
 /* ===== ENTER KEY SUPPORT ===== */
@@ -947,14 +960,6 @@ if (typeof adminMasterLogin !== "undefined") {
   });
 }
 
-// register enter
-if (typeof regMaster !== "undefined") {
-  regMaster.addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-      doRegister();
-    }
-  });
-}
 function updateWelcomeName(){
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   const name = session?.user?.name || "Student";
@@ -984,8 +989,8 @@ function backToSpecialProgram(){
   updateFooter("Special Program");
 }
 const specialDriveLinks = {
-  materials: "https://drive.google.com/drive/folders/1tsXIhNLZrT3ByPgl288j7D2AQt0jeYZn",
-  resources: "https://drive.google.com/drive/folders/1SEXXEilvj54f4Iffo1lnKcz_7X7fcaQ4"
+  materials: "PASTE_CLASS_MATERIALS_DRIVE_LINK",
+  resources: "PASTE_RESOURCES_DRIVE_LINK"
 };
 function openSpecialDrive(type){
   window.open(specialDriveLinks[type], "_blank");
@@ -994,6 +999,67 @@ function backToDashboard(){
   document.getElementById("specialProgram").style.display = "none";
   showDashboard();
 }
+// ===== STEP 3: ADMIN PENDING + APPROVE =====
+async function loadPendingUsers(){
+  const res = await fetch(API + "/admin-pending", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      masterPassword: adminSessionPass
+    })
+  });
+  const data = await res.json();
+  const box = document.getElementById("pendingList");
+  box.innerHTML = "";
+  if (!data.pending || data.pending.length === 0) {
+    box.innerHTML = "<p>No pending requests</p>";
+    return;
+  }
+  data.pending.forEach(user => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <p><b>${user.name}</b></p>
+      <p>ID: ${user.studentId}</p>
+      <p>${user.email}</p>
+      <button onclick="approveUser('${user.studentId}')">
+        Approve
+      </button>
+      <button onclick="rejectUser('${user.studentId}')" style="background:#dc2626;">
+        Reject
+      </button>
+    `;
+    box.appendChild(div);
+  });
+}
+async function approveUser(studentId){
+  const res = await fetch(API + "/admin-approve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studentId,
+      masterPassword: adminSessionPass
+    })
+  });
+  const data = await res.json();
+  alert(data.message || "Approved");
+  loadPendingUsers();
+}
+async function rejectUser(studentId){
+  if(!confirm("Reject this user?")) return;
+  const res = await fetch(API + "/admin-reject", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studentId,
+      masterPassword: adminSessionPass
+    })
+  });
+  const data = await res.json();
+  alert(data.message || "Rejected");
+  loadPendingUsers();
+}
+
 
 /* ===== ADD END ===== */
 </script>
