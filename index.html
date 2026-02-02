@@ -641,6 +641,11 @@ nav li:hover::after{
 
     <!-- ADMIN TOOLS -->
     <div id="adminTools" class="hidden">
+      <hr style="margin:20px 0;opacity:.2">
+      <h3>Find User</h3>
+      <input id="searchStudentId" placeholder="Student ID">
+      <button onclick="findUser()">Search</button>
+      <div id="foundUser" style="margin-top:15px;"></div>
       <h3>Pending Registrations</h3>
       <div id="pendingList"></div>
     </div>
@@ -738,8 +743,24 @@ async function doRegister(){
     regResult.innerText = data.error || "Registration failed";
     return;
   }
-  regResult.innerText =
-    "Registration submitted. Waiting for admin approval.";
+  regResult.innerHTML = `
+  <div style="
+    margin-top:15px;
+    padding:14px;
+    border-radius:12px;
+    background:#022c22;
+    color:#22c55e;
+    text-align:center;
+  ">
+    <p><b>Registration Successful</b></p>
+    <p>Your Temporary Password</p>
+    <h2 style="letter-spacing:2px">${data.tempPassword}</h2>
+    <small>
+      ⚠️ This password will work only after admin approval.<br>
+      Please save it carefully.
+    </small>
+  </div>
+`;
 }
 
 /* ---------- LOGIN ---------- */
@@ -1023,6 +1044,37 @@ async function rejectUser(studentId){
   alert(data.message || "Rejected");
   loadPendingUsers();
 }
+async function findUser(){
+  const studentId = searchStudentId.value.trim();
+  if(!studentId){
+    foundUser.innerText = "Enter Student ID";
+    return;
+  }
+  const res = await fetch(API + "/admin-find-user", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studentId,
+      masterPassword: adminSessionPass
+    })
+  });
+  const data = await res.json();
+  if(!res.ok){
+    foundUser.innerText = data.error || "User not found";
+    return;
+  }
+  foundUser.innerHTML = `
+    <div class="card">
+      <p><b>${data.name}</b></p>
+      <p>Email: ${data.email}</p>
+      <p style="color:#22c55e">
+        Password: <b>${data.password}</b>
+      </p>
+      <small>mustChangePassword: ${data.mustChangePassword}</small>
+    </div>
+  `;
+}
+
 window.onload = () => {
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   // session valid (30 minutes)
