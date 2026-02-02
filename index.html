@@ -428,9 +428,6 @@ nav li:hover::after{
     grid-template-columns: 50px 1fr 50px;
   }
 }
-#app{
-  display:none !important;
-}
 
 </style>
 </head>
@@ -489,7 +486,7 @@ nav li:hover::after{
 </div>
 
 <!-- APP -->
-<div id="app" class="hidden">
+<div id="app">
 
 <nav>
   <div class="logo">Artificial Intelligence and Data Science</div>
@@ -1026,17 +1023,27 @@ async function rejectUser(studentId){
   alert(data.message || "Rejected");
   loadPendingUsers();
 }
-function initPage(){
-  hideAll();
-  login.style.display = "flex";
-}
-window.onload = initPage;
-
+window.onload = () => {
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  // session valid (30 minutes)
+  if (
+    session.loginTime &&
+    Date.now() - session.loginTime < SESSION_DURATION
+  ) {
+    hideAll();
+    app.style.display = "block";
+    dashboard.style.display = "block";
+    updateWelcomeName();
+    updateFooter("All rights reserved");
+  } else {
+    // no session / expired
+    localStorage.removeItem("auth_session");
+    hideAll();
+    login.style.display = "flex";
+  }
+};
 
 /* ===== ADD END ===== */
 </script>
-
-
-
 </body>
 </html>
