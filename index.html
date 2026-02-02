@@ -471,6 +471,21 @@ nav li:hover::after{
   </div>
 </div>
 
+<!-- SET PASSWORD -->
+<div id="setPassword" class="center hidden" style="display:none;">
+
+  <div class="box">
+    <h2>🔑 Set New Password</h2>
+
+    <input id="newPass" type="password" placeholder="New Password">
+    <input id="confirmPass" type="password" placeholder="Confirm Password">
+
+    <button onclick="setNewPassword()">Save & Continue</button>
+
+    <div id="setPassError" style="color:#fca5a5;"></div>
+  </div>
+</div>
+
 <!-- APP -->
 <div id="app" class="hidden">
 
@@ -628,11 +643,6 @@ nav li:hover::after{
     <div id="adminTools" class="hidden">
       <h3>Pending Registrations</h3>
       <div id="pendingList"></div>
-      <input id="adminId" placeholder="Student ID">
-      <button onclick="adminReset()">Reset OTP</button>
-      <input id="staticPass" placeholder="Static Password">
-      <button onclick="setStatic()">Set Static Password</button>
-      <button onclick="unsetStatic()">Disable Static Password</button>
     </div>
     <p id="adminResult"></p>
   </div>
@@ -672,7 +682,6 @@ function showProfile(){
 
   <div class="meta">
     <div><span>Student ID: ${user.studentId}</span></div>
-    <div><span>Next Login Passcode: ${session.newOtp}</span></div>
   </div>
 </div>
 `;
@@ -742,7 +751,8 @@ async function doLogin(){
   const res = await fetch(API+"/login",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ studentId, otp })
+    body: JSON.stringify({studentId,password: otp})
+
   });
 
   const data = await res.json();
@@ -758,27 +768,17 @@ async function doLogin(){
 };
 
   localStorage.setItem("auth_session", JSON.stringify({
-    user: profile,
-    newOtp: data.newOtp,
-    loginTime: Date.now()
-  }));
+  user: profile,
+  loginTime: Date.now()
+}));
 
+  if (data.mustChangePassword) {
+  hideAll();
+  setPassword.style.display = "flex";
+} else {
   showDashboard();
 }
-
-/* ---------- AUTO LOGIN ---------- */
-(function autoLogin(){
-  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
-
-  if(session.loginTime && Date.now() - session.loginTime <= SESSION_DURATION){
-    showDashboard();
-  } else {
-    showLogin();
-  }
-})();
-
-
-
+}
 
 /* ---------- LOGOUT ---------- */
 function logout(){
@@ -844,80 +844,6 @@ function updateFooter(text){
   }
 }
 
-/* ---------- ADMIN RESET OTP ---------- */
-async function adminReset(){
-  const masterPassword = adminSessionPass;
-  const studentId = adminId.value.trim();
-  if(!masterPassword || !studentId){
-    adminResult.innerText = "Enter master password and student ID";
-    return;
-  }
-  try{
-    const res = await fetch(API + "/admin-reset", {
-      method: "POST",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify({
-        masterPassword,
-        studentId
-      })
-    });
-    const data = await res.json();
-    if(!res.ok){
-      adminResult.innerText = data.error || "Reset failed";
-      return;
-    }
-    adminResult.innerText = "New OTP: " + data.newOtp;
-  }catch(err){
-    adminResult.innerText = "Server error";
-    console.error(err);
-  }
-}
-
-async function setStatic(){
-  const studentId = adminId.value.trim();
-  const masterPassword = adminSessionPass;
-  const staticPassword = staticPass.value.trim();
-
-  if(!studentId || !masterPassword || !staticPassword){
-    adminResult.innerText = "Fill all fields";
-    return;
-  }
-
-  const res = await fetch(API + "/admin-set-static", {
-    method: "POST",
-    headers: { "Content-Type":"application/json" },
-    body: JSON.stringify({
-      studentId,
-      masterPassword,
-      staticPassword
-    })
-  });
-
-  const data = await res.json();
-  adminResult.innerText = data.message || data.error;
-}
-async function unsetStatic(){
-  const studentId = adminId.value.trim();
-  const masterPassword = adminSessionPass;
-
-
-  if(!studentId || !masterPassword){
-    adminResult.innerText = "Student ID + master password required";
-    return;
-  }
-
-  const res = await fetch(API + "/admin-unset-static", {
-    method: "POST",
-    headers: { "Content-Type":"application/json" },
-    body: JSON.stringify({
-      studentId,
-      masterPassword
-    })
-  });
-
-  const data = await res.json();
-  adminResult.innerText = data.message || data.error;
-}
 let adminSessionPass = null;
 
 function unlockAdmin(){
@@ -1032,6 +958,41 @@ async function loadPendingUsers(){
     box.appendChild(div);
   });
 }
+
+async function setNewPassword(){
+  const newPassword = newPass.value.trim();
+  const confirm = confirmPass.value.trim();
+
+  if(!newPassword || !confirm){
+    setPassError.innerText = "Both fields are required";
+    return;
+  }
+
+  if(newPassword !== confirm){
+    setPassError.innerText = "Passwords do not match";
+    return;
+  }
+
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  const studentId = session.user.studentId;
+
+  const res = await fetch(API + "/set-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studentId,
+      newPassword
+    })
+  });
+
+  const data = await res.json();
+  if(!res.ok){
+    setPassError.innerText = data.error || "Failed to set password";
+    return;
+  }
+  localStorage.removeItem("auth_session");
+  showDashboard();
+}
 async function approveUser(studentId){
   const res = await fetch(API + "/admin-approve", {
     method: "POST",
@@ -1059,6 +1020,11 @@ async function rejectUser(studentId){
   alert(data.message || "Rejected");
   loadPendingUsers();
 }
+function initPage(){
+  hideAll();
+  login.style.display = "flex";
+}
+window.onload = initPage;
 
 
 /* ===== ADD END ===== */
