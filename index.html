@@ -147,9 +147,10 @@ nav li{cursor:pointer;color:white}
   to   { opacity:1; transform:scale(1); }
 }
 
-.container{
+#app .container{
   animation: fadeIn 0.35s ease-in-out;
 }
+
 
 .card,
 .option-card{
@@ -427,7 +428,9 @@ nav li:hover::after{
     grid-template-columns: 50px 1fr 50px;
   }
 }
-
+#app{
+  display:none !important;
+}
 
 </style>
 </head>
@@ -537,6 +540,7 @@ nav li:hover::after{
       <div class="card"><h2>Professional Life Skill Development</h2>
         <button>View Details</button></div>
     </div>
+    <footer class="site-footer" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
   </div>
 
 
@@ -1032,9 +1036,7 @@ window.onload = initPage;
 /* ===== ADD END ===== */
 </script>
 
-<footer class="site-footer" id="simpleFooter">
-  © 2026 ADS 250 | All rights reserved
-</footer>
+
 
 </body>
 </html>
