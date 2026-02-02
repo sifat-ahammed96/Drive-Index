@@ -471,19 +471,27 @@ nav li:hover::after{
 </div>
 
 <!-- SET PASSWORD -->
-<div id="setPassword" class="center">
+<div id="setPassword" class="center hidden">
+  <form onsubmit="setNewPassword(event)">
+    <input
+      id="newPass"
+      type="password"
+      placeholder="New password"
+      required
+    >
+    <input
+      id="confirmPass"
+      type="password"
+      placeholder="Confirm password"
+      required
+    >
+    <button type="submit">
+      Set Password
+    </button>
 
-  <div class="box">
-    <h2>🔑 Set New Password</h2>
-
-    <input id="newPass" type="password" placeholder="New Password">
-    <input id="confirmPass" type="password" placeholder="Confirm Password">
-
-    <button onclick="setNewPassword()">Save & Continue</button>
-
-    <div id="setPassError" style="color:#fca5a5;"></div>
-  </div>
+  </form>
 </div>
+
 
 <!-- APP -->
 <div id="app">
@@ -983,39 +991,35 @@ async function loadPendingUsers(){
   });
 }
 
-async function setNewPassword(){
-  const newPassword = newPass.value.trim();
-  const confirm = confirmPass.value.trim();
+async function setNewPassword(e){
+  e.preventDefault();
+  const p1 = newPass.value.trim();
+  const p2 = confirmPass.value.trim();
 
-  if(!newPassword || !confirm){
-    setPassError.innerText = "Both fields are required";
+  if(p1 !== p2){
+    alert("Passwords do not match");
     return;
   }
-
-  if(newPassword !== confirm){
-    setPassError.innerText = "Passwords do not match";
-    return;
+  const session = JSON.parse(localStorage.getItem("auth_session"));
+  if(!session){
+  alert("Session expired");
+  return;
   }
-
-  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
-  const studentId = session.user.studentId;
-
   const res = await fetch(API + "/set-password", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type":"application/json" },
     body: JSON.stringify({
-      studentId,
-      newPassword
+      studentId: session.user.studentId,
+      newPassword: p1
     })
   });
-
-  const data = await res.json();
-  if(!res.ok){
-    setPassError.innerText = data.error || "Failed to set password";
-    return;
+  if(res.ok){
+    localStorage.removeItem("auth_session");
+    alert("Password updated. Please login again.");
+    location.reload();
+  } else {
+    alert("Failed to set password");
   }
-  localStorage.removeItem("auth_session");
-  showDashboard();
 }
 async function approveUser(studentId){
   const res = await fetch(API + "/admin-approve", {
