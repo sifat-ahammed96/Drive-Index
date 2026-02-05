@@ -656,6 +656,10 @@ nav li:hover::after{
       <h2>Computer Programming</h2>
       <button>View Details</button>
     </div>
+    <div class="card" onclick="openSpecialCourse('Discrete Mathematics')">
+      <h2>Discrete Mathematics</h2>
+      <button>View Details</button>
+    </div>
   </div>
 </div>
 <!-- SPECIAL PROGRAM COURSE VIEW -->
@@ -680,6 +684,11 @@ nav li:hover::after{
     <div class="option-card" onclick="openSpecialDrive('resources')">
       <h3>📚 Resources</h3>
     </div>
+    <div class="option-card" id="recordedCard" onclick="openSpecialDrive('recordedLectures')">
+      <h3>🎥 Recorded Lectures</h3>
+    </div>
+    <div class="option-card" id="labCard" onclick="openSpecialDrive('computerProgrammingLab')">
+      <h3>🔬 Computer Programming Lab</h3>
   </div>
 </div>
 
@@ -995,6 +1004,16 @@ function openSpecialCourse(courseName){
   specialCourseView.style.display = "block";
   specialCourseTitle.innerText = courseName;
   updateFooter(courseName);
+  const recorded = document.getElementById("recordedCard");
+  const lab = document.getElementById("labCard");
+
+  if(courseName === "Computer Programming"){
+    recorded.style.display = "block";
+    lab.style.display = "block";
+  } else {
+    recorded.style.display = "none";
+    lab.style.display = "none";
+  }
 }
 function backToSpecialProgram(){
   hideAll();
@@ -1003,12 +1022,29 @@ function backToSpecialProgram(){
   updateFooter("Special Program");
 }
 const specialDriveLinks = {
-  materials: "https://drive.google.com/drive/folders/1tsXIhNLZrT3ByPgl288j7D2AQt0jeYZn",
-  resources: "https://drive.google.com/drive/folders/1SEXXEilvj54f4Iffo1lnKcz_7X7fcaQ4"
+  "Computer Programming": {
+    materials: "https://drive.google.com/drive/folders/1tsXIhNLZrT3ByPgl288j7D2AQt0jeYZn",
+    resources: "https://drive.google.com/drive/folders/1SEXXEilvj54f4Iffo1lnKcz_7X7fcaQ4",
+    recordedLectures: "https://drive.google.com/drive/folders/17ge6bu2pd7B0O55-mCBOxcQeuRHwECpc",
+    computerProgrammingLab: "https://drive.google.com/drive/folders/1sZ28CQwxTJ48blQbiDnzxMlVSiPXDMzv"},
+  
+  "Discrete Mathematics": {
+    materials: "DM_MATERIALS_LINK",
+    resources: "DM_RESOURCES_LINK",
+  }
 };
+
 function openSpecialDrive(type){
-  window.open(specialDriveLinks[type], "_blank");
+  const courseName =
+    document.getElementById("specialCourseTitle").innerText.trim();
+  const link = specialDriveLinks[courseName]?.[type];
+  if(link){
+    window.open(link, "_blank");
+  } else {
+    alert("This section is not available for " + courseName);
+  }
 }
+
 function backToDashboard(){
   document.getElementById("specialProgram").style.display = "none";
   showDashboard();
@@ -1158,8 +1194,5 @@ window.onload = () => {
 
 /* ===== ADD END ===== */
 </script>
-
-
-
 </body>
 </html>
