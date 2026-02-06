@@ -479,6 +479,12 @@ nav li:hover::after{
   transform: scale(0.97);
 }
 
+ #app,
+  #dashboard,
+  nav,
+  .container {
+    display: none !important;
+  }
 
 </style>
 </head>
@@ -713,7 +719,7 @@ nav li:hover::after{
 </div>
 
 </div>
-<footer class="site-footer" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
+<footer class="site-footer hidden" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
 const SESSION_DURATION = 30 * 60 * 1000;
@@ -1190,6 +1196,7 @@ window.onload = () => {
     hideAll();
     login.style.display = "flex";
   }
+  document.getElementById("simpleFooter").style.display = "block";
 };
 
 
