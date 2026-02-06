@@ -254,9 +254,10 @@ input {
 }
 
 /* ===== NAVBAR ANIMATION ===== */
-nav{
+#app:not(.hidden) nav{
   animation: navSlide 0.6s ease-out;
 }
+
 
 @keyframes navSlide{
   from{ transform: translateY(-100%); opacity:0; }
