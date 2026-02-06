@@ -379,13 +379,13 @@ nav li:hover::after{
 }
 
 .brand-logo{
-  width:68px;
-  height:68px;
+  width:88px;
+  height:88px;
   object-fit:contain;
 
   filter:
-    drop-shadow(0 0 12px rgba(34,211,238,.9))
-    drop-shadow(0 0 28px rgba(34,211,238,.45));
+    drop-shadow(0 0 12px rgb(159, 149, 4))
+    drop-shadow(0 0 28px rgb(7, 112, 129));
 }
 
 .brand-title{
@@ -410,12 +410,12 @@ nav li:hover::after{
   justify-self:center;
 }
 .brand-logo-right{
-  width:92px;
-  height:92px;
+  width:112px;
+  height:112px;
 
   filter:
-    drop-shadow(0 0 16px rgba(34,211,238,1))
-    drop-shadow(0 0 34px rgba(34,211,238,.55));
+    drop-shadow(0 0 16px rgb(30, 255, 0))
+    drop-shadow(0 0 34px rgb(26, 103, 31));
 }
 @media(max-width:420px){
   .brand-logo-right{
@@ -480,6 +480,161 @@ nav li:hover::after{
   transform: scale(0.97);
 }
 
+/* ===== REGISTER PORTAL CUSTOM DESIGN ===== */
+.register-box{
+  border: 1px solid rgba(34,211,238,0.35);
+  background:
+    linear-gradient(160deg, #020617, #020617cc),
+    radial-gradient(circle at top right, rgba(34,211,238,.18), transparent 40%);
+}
+.register-box h2{
+  color:#22d3ee;
+  text-shadow:0 0 12px rgba(34,211,238,.6);
+}
+.register-box button{
+  background: linear-gradient(135deg,#22d3ee,#06b6d4);
+}
+.register-box{
+  animation: registerPop 0.4s ease;
+}
+@keyframes registerPop{
+  from{
+    opacity:0;
+    transform: scale(0.96);
+  }
+  to{
+    opacity:1;
+    transform: scale(1);
+  }
+}
+/* ===== LOGIN PORTAL CUSTOM DESIGN ===== */
+.login-box{
+  border: 1px solid rgba(99,102,241,0.35);
+  background:
+    linear-gradient(160deg, #020617, #020617cc),
+    radial-gradient(circle at top left, rgba(99,102,241,.18), transparent 40%);
+}
+.login-box h2{
+  color:#6366f1;
+  text-shadow:0 0 12px rgba(99,102,241,.6);
+}
+.login-box button{
+  background: linear-gradient(135deg,#6366f1,#4f46e5);
+}
+.login-box{
+  animation: loginPop 0.4s ease;
+}
+@keyframes loginPop{
+  from{
+    opacity:0;
+    transform: scale(0.96);
+  }
+  to{
+    opacity:1;
+    transform: scale(1);
+  }
+}
+/* ===== PROFILE MOBILE TWEAK ===== */
+@media(max-width:600px){
+  #profile .grid{
+    gap:18px;
+  }
+  #profile .card{
+    padding:22px;
+  }
+}
+/* ===== PROFILE SECTION TITLE STYLE ===== */
+#profile h3{
+  font-size:18px;
+  margin-bottom:12px;
+  padding-bottom:6px;
+  color:#22d3ee;
+  border-bottom:2px solid rgba(34,211,238,0.35);
+  letter-spacing:0.4px;
+}
+/* ===== PROFILE CARD ACTIVE HOVER ===== */
+#profile .card{
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+#profile .card:hover{
+  transform: translateY(-4px);
+  border-color:#22d3ee;
+  box-shadow:
+    0 12px 30px rgba(34,211,238,0.25);
+}
+button:disabled{
+  opacity:0.7;
+  cursor:not-allowed;
+}
+/* ===== Notice Highlight Text ===== */
+.notice-highlight{
+  margin:10px 0 16px;
+  padding:10px 14px;
+  font-weight:600;
+  color:#eafff6;
+  background:linear-gradient(
+    90deg,
+    rgba(34,197,94,0.25),
+    rgba(16,185,129,0.25)
+  );
+  border-left:4px solid #22c55e;
+  border-radius:8px;
+  box-shadow:inset 0 0 0 1px rgba(34,197,94,0.25);
+}
+/* ===== ROUTINE MODAL FIX ===== */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:rgba(0,0,0,0.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:9999;
+}
+.modal.hidden{
+  display:none;
+}
+.modal-box{
+  background:#0f172a;
+  padding:24px;
+  border-radius:16px;
+  width:92vw;
+  height:88vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.modal-box img{
+  width:100%;
+  object-fit:contain;
+  border-radius:10px;
+}
+.modal-box button{
+  margin-top:16px;
+}
+/* ===== MODAL SCROLL FIX ===== */
+.modal-content{
+  flex:1;
+  overflow-y:auto;
+  margin:12px 0;
+}
+
+.modal-box button{
+  position:sticky;
+  bottom:0;
+  padding:14px;
+}
+
+
+
 </style>
 </head>
 
@@ -487,11 +642,10 @@ nav li:hover::after{
 
 <!-- LOGIN -->
 <div id="login" class="center">
-  <div class="box">
+  <div class="box login-box">
     <div class="login-brand">
 
   <img src="favicon.png" class="brand-logo">
-
   <div class="brand-text">
     <div class="brand-title">AI & DATA SCIENCE</div>
     <div class="brand-sub">ADS 250</div>
@@ -501,7 +655,7 @@ nav li:hover::after{
     <h2>🔐 Login Portal</h2>
     <input id="loginId" placeholder="Student ID">
     <input id="loginOtp" placeholder="Passcode" type="password">
-    <button onclick="doLogin()">Access Portal</button>
+    <button id="loginBtn" onclick="doLogin()">Access Portal</button>
     <p onclick="showRegister()" style="cursor:pointer;color:#38bdf8">Register</p>
     <div class="error" id="loginError"></div>
   </div>
@@ -509,12 +663,16 @@ nav li:hover::after{
 
 <!-- REGISTER -->
 <div id="register" class="center">
-  <div class="box">
+  <div class="box register-box">
     <h2>📝 Registration Portal</h2>
     <input id="regName" placeholder="Full Name">
     <input id="regId" type="number" placeholder="Student ID">
     <input id="regEmail" type="email" placeholder="Email">
-
+      <!-- BATCH NUMBER -->
+  <div style="display:flex;gap:10px">
+    <input value="ADS" disabled style="width:30%;opacity:0.7">
+    <input id="regBatchNum" type="number" placeholder="Batch (e.g. 250)" style="width:70%">
+  </div>
     <button onclick="doRegister()">Register</button>
     <p onclick="showLogin()" style="cursor:pointer;color:#38bdf8">Back to Login</p>
     <div id="regResult"></div>
@@ -558,7 +716,6 @@ nav li:hover::after{
     <li onclick="showProfile()">Profile</li>
     <li onclick="showSpecialProgram()">Special Program</li>
     <li onclick="showAdmin()">Admin</li>
-    <li onclick="logout()">Logout</li>
   </ul>
 </nav>
 
@@ -681,7 +838,6 @@ nav li:hover::after{
 <!-- PROFILE -->
 <div id="profile" class="container hidden fade">
   <div class="card">
-    <h2>👤 Profile</h2>
     <div id="profileData"></div>
   </div>
 </div>
@@ -717,6 +873,15 @@ nav li:hover::after{
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
 const SESSION_DURATION = 30 * 60 * 1000;
+
+document.addEventListener("click", function(e){
+  const modal = document.getElementById("routineModal");
+  if(!modal || modal.classList.contains("hidden")) return;
+
+  if(e.target === modal){
+    modal.classList.add("hidden");
+  }
+});
 
 /* ---------- NAV ---------- */
 function hideAll(){
@@ -763,21 +928,56 @@ function showProfile(){
 
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   const user = session.user || {};
-
+  
   profileData.innerHTML = `
-<div class="profile-card">
-  <div class="avatar">${user.name?.[0] || "U"}</div>
-  <h3>${user.name}</h3>
-  <p>Email: ${user.email}</p>
+  <div class="grid" style="text-align:left">
 
-  <div class="meta">
-    <div><span>Student ID: ${user.studentId}</span></div>
+    <!-- CARD 1: BASIC INFO -->
+    <div class="card">
+      <div class="avatar">${user.name?.[0] || "U"}</div>
+      <h2>${user.name}</h2>
+
+      <p>📧 <b>Email</b><br>${user.email}</p>
+      <p>🎓 <b>Student ID</b><br>${user.studentId}</p>
+
+      <button onclick="logout()" style="margin-top:15px">
+        🚪 Logout
+      </button>
+    </div>
+
+    <!-- CARD 2: ACADEMIC TIMELINE -->
+    <div class="card">
+      <h2>Academic Timeline</h2>
+      <h3>BSc in Artificial Intelligence & Data Science</h3>
+      <p>• Batch: <b>${user.batch || "Not Assigned"}</b></p>
+      <p>• Session: Spring 2026 (Ongoing)</p>
+      <p>• Academic Level: Undergraduate</p>
+      <p>• Program Duration: 4 Years</p>
+      <p>• Total Semesters: 12</p>
+    </div>
+
+    <!-- CARD 3: NOTICE -->
+    <div class="card">
+    <h3>📢 Notice</h3>
+
+    <p class="notice-highlight">Mid-term starts from 06 March.</p>
+
+    <h3>📑 Exam Schedule</h3>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button onclick="showExam('mid')">Mid-term</button>
+      <button onclick="showExam('final')">Final</button>
+    </div>
+
+    <div id="examAction" style="margin-top:12px"></div>
   </div>
-</div>
-`;
+  `;
+  // 🔥 FORCE BATCH SETUP FOR OLD USERS
+  if(!user.batch){
+    document.getElementById("batchModal").classList.remove("hidden");
+  }
 
 }
-
 /* ---------- SEMESTER ---------- */
 function openSemester(){
   semesterList.classList.add("hidden");
@@ -795,6 +995,7 @@ async function doRegister(){
   const name = regName.value.trim();
   const studentId = regId.value.trim();
   const email = regEmail.value.trim();
+  const batchNum = regBatchNum.value.trim();
   // empty check
   if (!name || !studentId || !email) {
     regResult.innerText = "All fields are required";
@@ -817,7 +1018,8 @@ async function doRegister(){
     body: JSON.stringify({
       name,
       studentId,
-      email
+      email,
+      batch: "ADS-" + batchNum,
     })
   });
   const data = await res.json();
@@ -847,6 +1049,9 @@ async function doRegister(){
 
 /* ---------- LOGIN ---------- */
 async function doLogin(){
+  const btn = document.getElementById("loginBtn");
+  btn.innerText = "Accessing...";
+  btn.disabled = true;
   const studentId = loginId.value.trim();
   const otp = loginOtp.value.trim();
   if(!studentId || !otp){
@@ -863,6 +1068,8 @@ async function doLogin(){
 
   const data = await res.json();
   if(!res.ok){
+    btn.innerText = "Access Portal";
+    btn.disabled = false;
     loginError.innerText=data.error;
     return;
   }
@@ -870,13 +1077,16 @@ async function doLogin(){
   const profile = {
   name: data.name,
   studentId,
-  email: data.email
+  email: data.email,
+  batch: data.batch,
 };
 
   localStorage.setItem("auth_session", JSON.stringify({
   user: profile,
   loginTime: Date.now()
 }));
+  btn.innerText = "Access Portal";
+  btn.disabled = false;
 
   if (data.mustChangePassword) {
   hideAll();
@@ -1213,9 +1423,114 @@ window.onload = () => {
 
   document.getElementById("simpleFooter").style.display = "block";
 };
+function setNotice(text){
+  const el = document.getElementById("noticeText");
+  if(el) el.innerText = text;
+}
+function showExam(type){
+  const box = document.getElementById("examAction");
+  if(!box) return;
+  if(type === "mid"){
+    box.innerHTML = `
+      <button onclick="openRoutine('mid')">
+        📄 View Mid-term Routine
+      </button>
+    `;
+  }
+  if(type === "final"){
+    box.innerHTML = `
+      <button onclick="openRoutine('final')">
+        📄 View Final Routine
+      </button>
+    `;
+  }
+}
+function openRoutine(type){
+  const modal = document.getElementById("routineModal");
+  const title = document.getElementById("routineTitle");
+  const img   = document.getElementById("routineImage");
 
+  let src = "";
+  let label = "";
+
+  if(type === "mid"){
+    src = "midterm.png";
+    label = "Mid-term";
+    title.innerText = "Mid-term Exam Routine";
+  }
+
+  if(type === "final"){
+    src = "final.png";
+    label = "Final";
+    title.innerText = "Final Exam Routine";
+  }
+
+  // 🔍 check if image exists
+  const testImg = new Image();
+  testImg.onload = function(){
+    img.src = src;
+    modal.classList.remove("hidden");
+  };
+  testImg.onerror = function(){
+    alert(label + " routine is not published yet. Please wait.");
+  };
+  testImg.src = src;
+}
+window.closeRoutine = function(){
+  const modal = document.getElementById("routineModal");
+  if(modal){
+    modal.classList.add("hidden");
+  }
+};
+function saveBatch(){
+  const num = document.getElementById("setupBatchNum").value.trim();
+  if(!num){
+    alert("Batch number is required");
+    return;
+  }
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if(!session.user){
+    alert("Session expired");
+    location.reload();
+    return;
+  }
+  session.user.batch = "ADS-" + num;
+  localStorage.setItem("auth_session", JSON.stringify(session));
+  document.getElementById("batchModal").classList.add("hidden");
+  showProfile(); // refresh profile view
+}
 
 /* ===== ADD END ===== */
 </script>
+<!-- BATCH SETUP MODAL -->
+<div id="batchModal" class="modal hidden">
+  <div class="modal-box" style="max-width:420px;height:auto">
+    <h3 style="color:#facc15">⚠ Academic Information Required</h3>
+
+    <p style="opacity:.85;margin:10px 0 18px">
+      Please set your batch number to continue.
+    </p>
+
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <input value="ADS" disabled style="width:30%; background:#0f172a;
+      color:#22d3ee; font-weight:700; text-align:center; opacity:1; border:1px solid #1f2937;">
+      <input id="setupBatchNum" type="number" placeholder="Batch (e.g. 250)" style="width:70%">
+    </div>
+
+    <button onclick="saveBatch()">Save</button>
+  </div>
+</div>
+
+<!-- ROUTINE MODAL -->
+<div id="routineModal" class="modal hidden">
+  <div class="modal-box">
+    <h3 id="routineTitle"></h3>
+    <div class="modal-content">
+      <img id="routineImage" src="" alt="Routine">
+    </div>
+    <button onclick="closeRoutine()">Close</button>
+  </div>
+</div>
+
 </body>
 </html>
