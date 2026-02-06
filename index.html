@@ -480,13 +480,6 @@ nav li:hover::after{
   transform: scale(0.97);
 }
 
- #app,
-  #dashboard,
-  nav,
-  .container {
-    display: none !important;
-  }
-
 </style>
 </head>
 
@@ -558,7 +551,7 @@ nav li:hover::after{
 
 <!-- APP -->
 <div id="app" class="hidden">
-  <nav>
+  <nav style="display:none">
   <div class="logo">Artificial Intelligence and Data Science</div>
   <ul>
     <li onclick="showDashboard()">Home</li>
@@ -727,15 +720,38 @@ const SESSION_DURATION = 30 * 60 * 1000;
 
 /* ---------- NAV ---------- */
 function hideAll(){
-  ["login","register","setPassword","app","dashboard","specialProgram","specialCourseView","profile","admin"]
+  ["login","register","setPassword","dashboard","specialProgram","specialCourseView","profile","admin"]
 .forEach(id => {
   const el = document.getElementById(id);
   if(el) el.style.display = "none";
 });
 }
-function showLogin(){ hideAll(); login.style.display="flex"; }
-function showRegister(){ hideAll(); register.style.display="flex"; }
-function showDashboard(){ hideAll(); app.style.display="block"; dashboard.style.display="block"; updateFooter("All rights reserved"); updateWelcomeName(); }
+function showLogin(){
+  hideAll();
+  app.classList.add("hidden");        // 🔥 IMPORTANT
+  app.style.display = "none";
+  const nav = document.querySelector("#app nav");
+  nav.style.display = "none";
+  login.style.display = "flex";
+}
+function showRegister(){
+  hideAll();
+  app.classList.add("hidden");        // 🔥 IMPORTANT
+  app.style.display = "none";
+  const nav = document.querySelector("#app nav");
+  nav.style.display = "none";
+  register.style.display = "flex";
+}
+function showDashboard(){
+  hideAll();
+  app.classList.remove("hidden");     // 🔥 SYNC CLASS
+  app.style.display = "block";
+  const nav = document.querySelector("#app nav");
+  nav.style.display = "flex";         // 🔥 ONLY PLACE nav shows
+  dashboard.style.display = "block";
+  updateFooter("All rights reserved");
+  updateWelcomeName();
+}
 function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block";updateFooter("Admin"); }
 
 /* ---------- PROFILE ---------- */
@@ -1181,22 +1197,20 @@ async function findUser(){
 
 window.onload = () => {
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
-  // session valid (30 minutes)
+
+  hideAll();
+
   if (
     session.loginTime &&
     Date.now() - session.loginTime < SESSION_DURATION
   ) {
-    hideAll();
-    app.style.display = "block";
-    dashboard.style.display = "block";
-    updateWelcomeName();
-    updateFooter("All rights reserved");
+    showDashboard(); // ✅ ONLY ENTRY POINT
   } else {
-    // no session / expired
-    localStorage.removeItem("auth_session");
-    hideAll();
-    login.style.display = "flex";
-  }
+  localStorage.removeItem("auth_session");
+  app.style.display = "none";              // 🔥 ADD
+  document.querySelector("#app nav").style.display = "none"; // 🔥 ADD
+  login.style.display = "flex";}
+
   document.getElementById("simpleFooter").style.display = "block";
 };
 
