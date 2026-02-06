@@ -601,9 +601,7 @@ nav li:hover::after{
       <div class="card"><h2>Professional Life Skill Development</h2>
         <button>View Details</button></div>
     </div>
-    <footer class="site-footer" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
   </div>
-
 
   <!-- ===== ADD START: Course level ===== -->
   <div id="courseView" class="hidden fade">
@@ -656,6 +654,10 @@ nav li:hover::after{
       <h2>Computer Programming</h2>
       <button>View Details</button>
     </div>
+    <div class="card" onclick="openSpecialCourse('Discrete Mathematics')">
+      <h2>Discrete Mathematics</h2>
+      <button>View Details</button>
+    </div>
   </div>
 </div>
 <!-- SPECIAL PROGRAM COURSE VIEW -->
@@ -673,13 +675,7 @@ nav li:hover::after{
   <h2 id="specialCourseTitle" style="color:#22d3ee;margin-bottom:30px">
     Computer Programming
   </h2>
-  <div class="option-grid">
-    <div class="option-card" onclick="openSpecialDrive('materials')">
-      <h3>📁 Class Materials</h3>
-    </div>
-    <div class="option-card" onclick="openSpecialDrive('resources')">
-      <h3>📚 Resources</h3>
-    </div>
+  <div class="option-grid" id="specialOptions">
   </div>
 </div>
 
@@ -718,7 +714,7 @@ nav li:hover::after{
 </div>
 
 </div>
-
+<footer class="site-footer" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
 const SESSION_DURATION = 30 * 60 * 1000;
@@ -1002,12 +998,54 @@ function backToSpecialProgram(){
   specialProgram.style.display = "block";
   updateFooter("Special Program");
 }
-const specialDriveLinks = {
-  materials: "https://drive.google.com/drive/folders/1tsXIhNLZrT3ByPgl288j7D2AQt0jeYZn",
-  resources: "https://drive.google.com/drive/folders/1SEXXEilvj54f4Iffo1lnKcz_7X7fcaQ4"
+const specialCourses = {
+  "Computer Programming": [
+    { key: "materials", label: "📁 Class Materials" },
+    { key: "resources", label: "📚 Resources" },
+    { key: "recorded", label: "🎥 Recorded Class" },
+    { key: "lab", label: "🔬 Computer Programming Lab" }
+  ],
+  "Discrete Mathematics": [
+    { key: "materials", label: "📁 Class Materials" },
+    { key: "resources", label: "📚 Resources" }
+  ]
 };
-function openSpecialDrive(type){
-  window.open(specialDriveLinks[type], "_blank");
+
+const specialDriveLinks = {
+  "Computer Programming": {
+    materials: "https://drive.google.com/drive/folders/1tsXIhNLZrT3ByPgl288j7D2AQt0jeYZn",
+    resources: "https://drive.google.com/drive/folders/1SEXXEilvj54f4Iffo1lnKcz_7X7fcaQ4",
+    recorded: "https://drive.google.com/drive/folders/17ge6bu2pd7B0O55-mCBOxcQeuRHwECpc",
+    lab: "https://drive.google.com/drive/folders/1sZ28CQwxTJ48blQbiDnzxMlVSiPXDMzv"
+  },
+  "Discrete Mathematics": {
+    materials: "https://drive.google.com/drive/folders/1BwSU5hLRsorJwbNX0wDPvONgldr8gzjN",
+    resources: "https://drive.google.com/drive/folders/1Ul-3QmS81pcqxDSh8keAnqrWPYkTKysc"
+  }
+};
+
+function openSpecialCourse(courseName){
+  hideAll();
+  app.style.display = "block";
+  specialCourseView.style.display = "block";
+  specialCourseTitle.innerText = courseName;
+  updateFooter(courseName);
+
+  const box = document.getElementById("specialOptions");
+  box.innerHTML = "";
+
+  specialCourses[courseName].forEach(item => {
+    const div = document.createElement("div");
+    div.className = "option-card";
+    div.innerHTML = `<h3>${item.label}</h3>`;
+    div.onclick = () => {
+      window.open(
+        specialDriveLinks[courseName][item.key],
+        "_blank"
+      );
+    };
+    box.appendChild(div);
+  });
 }
 function backToDashboard(){
   document.getElementById("specialProgram").style.display = "none";
