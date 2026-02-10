@@ -632,6 +632,280 @@ button:disabled{
   bottom:0;
   padding:14px;
 }
+/* ===== FINAL SUPPORT FORM (BEST VERSION) ===== */
+
+.support-form-card{
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 32px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(15,23,42,0.85),
+    rgba(2,6,23,0.9)
+  );
+
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 18px;
+
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.45);
+
+  animation: supportCardIn 0.6s ease-out;
+}
+
+/* Card entry animation */
+@keyframes supportCardIn{
+  from{
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Inputs */
+.support-form-card input,
+.support-form-card textarea{
+  width: 100%;
+  padding: 15px 18px;
+
+  background: rgba(2,6,23,0.9);
+  border: 1px solid rgba(148,163,184,0.25);
+  border-radius: 12px;
+
+  color: #e5e7eb;
+  font-size: 15px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.support-form-card textarea{
+  min-height: 160px;
+  resize: vertical;
+}
+
+/* Input focus animation */
+.support-form-card input:focus,
+.support-form-card textarea:focus{
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56,189,248,0.18);
+  transform: translateY(-1px);
+}
+
+/* Button */
+.support-form-card button{
+  margin-top: 10px;
+  padding: 15px;
+  width: 100%;
+
+  background: linear-gradient(
+    135deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  border: none;
+  border-radius: 14px;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Button hover animation */
+.support-form-card button:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(34,197,94,0.35);
+  filter: brightness(1.05);
+}
+
+/* Button press */
+.support-form-card button:active{
+  transform: scale(0.97);
+}
+#supportFormTitle{
+  margin-bottom: 18px;
+  color: #e5e7eb;
+  animation: titleFade 0.5s ease-out;
+}
+
+@keyframes titleFade{
+  from{
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== CONTACT LIST ===== */
+
+.contact-list{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-item{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  padding: 16px 18px;
+  border-radius: 14px;
+
+  background: rgba(2,6,23,0.85);
+  border: 1px solid rgba(148,163,184,0.25);
+
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 15px;
+
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.contact-item span{
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.contact-item:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+/* ===== MY SUPPORT REQUESTS UI ===== */
+
+.support-history-card{
+  animation: fadeUp 0.5s ease;
+}
+
+.support-list{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.support-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(15,23,42,0.9),
+    rgba(2,6,23,0.95)
+  );
+  border: 1px solid rgba(148,163,184,0.15);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  animation: fadeUp 0.4s ease;
+}
+
+.support-info{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.support-title{
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.support-meta{
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.support-status{
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.support-status.pending{
+  background: rgba(234,179,8,0.15);
+  color: #facc15;
+}
+.support-status.resolved{
+  background: rgba(34,197,94,0.15);
+  color: #22c55e;
+}
+.support-status.rejected{
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.35);
+}
+
+
+.support-loading,
+.support-empty{
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.6;
+  padding: 20px 0;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== ADMIN SUPPORT STATUS DROPDOWN FIX ===== */
+#admin select{
+  width: 160px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  margin-right: 10px;
+
+  background: #020617;
+  color: #e5e7eb;
+
+  border: 1px solid rgba(148,163,184,0.35);
+  border-radius: 10px;
+
+  font-family: "Tektur", sans-serif;
+  font-size: 14px;
+
+  outline: none;
+}
+
+#admin select option{
+  background: #020617;
+  color: #e5e7eb;
+}
+/* ===== FIX: allow select click inside admin cards ===== */
+#admin .card::before{
+  pointer-events: none;
+}
+#admin select{
+  position: relative;
+  z-index: 5;
+}
 
 </style>
 </head>
@@ -711,9 +985,10 @@ button:disabled{
   <div class="logo">Artificial Intelligence and Data Science</div>
   <ul>
     <li onclick="showDashboard()">Home</li>
-    <li onclick="showProfile()">Profile</li>
     <li onclick="showSpecialProgram()">Special Program</li>
-    <li onclick="showAdmin()">Admin</li>
+    <li onclick="showProfile()">Profile</li>
+    <li onclick="showSupport()">Support</li>
+    <li id="adminNav" onclick="showAdmin()" style="display:none">Admin</li>
   </ul>
 </nav>
 
@@ -843,17 +1118,128 @@ button:disabled{
   </div>
 </div>
 
+<!-- SUPPORT PAGE -->
+<div id="supportPage" class="container hidden fade">
+
+  <button onclick="backToDashboard()" style="
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;">
+    ← Back
+  </button>
+
+  <h2 style="color:#22d3ee;margin-bottom:30px">
+    Support Center
+  </h2>
+
+  <div class="option-grid">
+
+    <div class="option-card" onclick="openSupportForm('materials')">
+      <h3>📚 Request for Materials</h3>
+      <p>Ask for notes, slides or missing content</p>
+    </div>
+
+    <div class="option-card" onclick="openSupportForm('feedback')">
+      <h3>📝 Feedback</h3>
+      <p>Suggestions or opinions</p>
+    </div>
+
+    <div class="option-card" onclick="openSupportForm('bug')">
+      <h3>🐞 Report a Problem</h3>
+      <p>Something not working?</p>
+    </div>
+
+    <div class="option-card" onclick="showContactInfo()">
+      <h3>📞 Contact Us</h3>
+      <p>Direct help or inquiry</p>
+    </div>
+
+  </div>
+</div>
+<!-- SUPPORT FORM PAGE -->
+<div id="supportFormPage" class="container hidden fade">
+
+  <button onclick="showSupport()" style="
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;">
+    ← Back
+  </button>
+
+  <h2 id="supportFormTitle" style="color:#22d3ee;margin-bottom:20px">
+    Support
+  </h2>
+  <input type="hidden" id="supportType">
+  <div class="support-form-card">
+    <input id="supportSubject" placeholder="Subject">
+    <textarea
+      id="supportMessage"
+      placeholder="Write your message..."
+    ></textarea>
+    <button onclick="submitSupport()">Submit</button>
+  </div>
+</div>
+<!-- CONTACT INFO PAGE -->
+<div id="contactInfoPage" class="container hidden fade">
+
+  <button onclick="showSupport()" style="
+    background:#7c3aed;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;">
+    ← Back
+  </button>
+
+  <h2 style="color:#22d3ee;margin-bottom:30px">
+    Contact Us
+  </h2>
+
+  <div class="support-form-card contact-list">
+    <!-- WhatsApp -->
+    <a class="contact-item" href="https://wa.me/8801601401311" target="_blank">
+      🟢 WhatsApp
+      <span>Chat with us on WhatsApp</span>
+    </a>
+    <!-- Telegram -->
+    <a class="contact-item" href="https://t.me/sifatahammed" target="_blank">
+      🔵 Telegram
+      <span>Message us on Telegram</span>
+    </a>
+    <!-- Facebook -->
+    <a class="contact-item" href="https://facebook.com/useromcv" target="_blank">
+      🔷 Facebook - 1
+      <span>Admin Profile</span>
+    </a>
+    <!-- Facebook -->
+    <a class="contact-item" href="https://facebook.com/jahidhossan480" target="_blank">
+      🔷 Facebook - 2
+      <span>Admin Profile</span>
+    </a>
+    <!-- Email -->
+    <a class="contact-item" href="mailto:ads.githubportal@gmail.com">
+      📧 Email
+      <span>ads.githubportal@gmail.com</span>
+    </a>
+  </div>
+</div>
+
+
 <!-- ADMIN -->
 <div id="admin" class="container hidden fade">
   <div class="card">
 
     <h2>🔑 Admin Panel</h2>
-
-    <!-- ADMIN UNLOCK -->
-    <div id="adminUnlock">
-      <input id="adminMasterLogin" placeholder="Enter Master Password" type="password">
-      <button onclick="unlockAdmin()">Unlock Admin Panel</button>
-    </div>
 
     <!-- ADMIN TOOLS -->
     <div id="adminTools" class="hidden">
@@ -865,10 +1251,14 @@ button:disabled{
       <h3>Pending Registrations</h3>
       <div id="pendingList"></div>
     </div>
+    <hr style="margin:30px 0;opacity:.25">
+    <h3>🛠 Support Inbox</h3>
+    <div id="adminSupportList">
+      <p style="opacity:.6">Loading support requests...</p>
+    </div>
+
     <p id="adminResult"></p>
   </div>
-</div>
-
 </div>
 <footer class="site-footer hidden" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
 <script>
@@ -886,11 +1276,15 @@ document.addEventListener("click", function(e){
 
 /* ---------- NAV ---------- */
 function hideAll(){
-  ["login","register","setPassword","dashboard","specialProgram","specialCourseView","profile","admin"]
-.forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.style.display = "none";
-});
+  ["login","register","setPassword","dashboard","specialProgram","specialCourseView","profile",
+  "admin","supportPage","supportFormPage","contactInfoPage"]
+  .forEach(id => {
+    const el = document.getElementById(id);
+    if(el){
+    el.style.display = "none";
+    el.classList.add("hidden");
+    }
+  });
 }
 function showLogin(){
   hideAll();
@@ -917,14 +1311,45 @@ function showDashboard(){
   dashboard.style.display = "block";
   updateFooter("All rights reserved");
   updateWelcomeName();
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  const adminNav = document.getElementById("adminNav");
+  if (session.user?.isAdmin) {
+    adminNav.style.display = "block";
+  } else {
+    adminNav.style.display = "none";
+  }
+
 }
-function showAdmin(){ hideAll(); app.style.display="block"; admin.style.display="block";updateFooter("Admin"); }
+function showAdmin(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if (!session.user?.isAdmin) {
+    alert("Unauthorized access");
+    return;
+  }
+  hideAll();
+  app.classList.remove("hidden");
+  app.style.display = "block";
+  document.querySelector("#app nav").style.display = "flex";
+  admin.classList.remove("hidden");
+  admin.style.display = "block";
+
+  // 🔥 AUTO UNLOCK
+  if (window.adminUnlock) adminUnlock.classList.add("hidden");
+  adminTools.classList.remove("hidden");
+  adminResult.innerText = "Admin access granted";
+  loadPendingUsers();
+  loadAdminSupportInbox();
+  updateFooter("Admin"); 
+}
 
 /* ---------- PROFILE ---------- */
 function showProfile(){
   hideAll();
-  app.style.display="block";
-  profile.style.display="block";
+  app.classList.remove("hidden");   // 🔓 MUST
+  app.style.display = "block";
+  document.querySelector("#app nav").style.display = "flex";
+  profile.classList.remove("hidden");
+  profile.style.display = "block";
   updateFooter("Profile");
 
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
@@ -969,15 +1394,21 @@ function showProfile(){
       <button onclick="showExam('mid')">Mid-term</button>
       <button onclick="showExam('final')">Final</button>
     </div>
-
-    <div id="examAction" style="margin-top:12px"></div>
-  </div>
+    <div id="examAction" style="margin-top:12px"></div> 
+    </div>
+    <!-- CARD 4: MY SUPPORT REQUESTS -->
+    <div class="card support-history-card">
+      <h3>🛠 My Support Requests</h3>
+      <div id="mySupportList" class="support-list">
+        <p class="support-loading">Loading your requests...</p>
+      </div>
+    </div>
   `;
+  loadMySupportRequests();
   // 🔥 FORCE BATCH SETUP FOR OLD USERS
   if(!user.batch){
     document.getElementById("batchModal").classList.remove("hidden");
   }
-
 }
 /* ---------- SEMESTER ---------- */
 function openSemester(){
@@ -1080,6 +1511,7 @@ async function doLogin(){
   studentId,
   email: data.email,
   batch: data.batch,
+  isAdmin: data.isAdmin === true
 };
 
   localStorage.setItem("auth_session", JSON.stringify({
@@ -1161,28 +1593,6 @@ function updateFooter(text){
   }
 }
 
-let adminSessionPass = null;
-
-function unlockAdmin(){
-  const pass = adminMasterLogin.value.trim();
-
-  if(!pass){
-    adminResult.innerText = "Enter master password";
-    return;
-  }
-
-  // save admin password for session
-  adminSessionPass = pass;
-
-  adminUnlock.classList.add("hidden");
-  adminTools.classList.remove("hidden");
-
-  adminResult.innerText = "Admin panel unlocked";
-
-  // ✅ THIS WAS MISSING
-  loadPendingUsers();
-}
-
 /* ===== ENTER KEY SUPPORT ===== */
 
 // login enter
@@ -1190,15 +1600,6 @@ if (typeof loginOtp !== "undefined") {
   loginOtp.addEventListener("keydown", function(e){
     if(e.key === "Enter"){
       doLogin();
-    }
-  });
-}
-
-// admin unlock enter
-if (typeof adminMasterLogin !== "undefined") {
-  adminMasterLogin.addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-      unlockAdmin();
     }
   });
 }
@@ -1217,13 +1618,6 @@ function showSpecialProgram(){
   app.style.display = "block";
   specialProgram.style.display = "block";
   updateFooter("Special Program");
-}
-function openSpecialCourse(courseName){
-  hideAll();
-  app.style.display = "block";
-  specialCourseView.style.display = "block";
-  specialCourseTitle.innerText = courseName;
-  updateFooter(courseName);
 }
 function backToSpecialProgram(){
   hideAll();
@@ -1286,11 +1680,12 @@ function backToDashboard(){
 }
 // ===== STEP 3: ADMIN PENDING + APPROVE =====
 async function loadPendingUsers(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   const res = await fetch(API + "/admin-pending", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      masterPassword: adminSessionPass
+      adminId: session.user.studentId
     })
   });
   const data = await res.json();
@@ -1349,12 +1744,14 @@ async function setNewPassword(e){
   }
 }
 async function approveUser(studentId){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+
   const res = await fetch(API + "/admin-approve", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       studentId,
-      masterPassword: adminSessionPass
+      adminId: session.user.studentId
     })
   });
   const data = await res.json();
@@ -1362,13 +1759,14 @@ async function approveUser(studentId){
   loadPendingUsers();
 }
 async function rejectUser(studentId){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   if(!confirm("Reject this user?")) return;
   const res = await fetch(API + "/admin-reject", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       studentId,
-      masterPassword: adminSessionPass
+      adminId: session.user.studentId
     })
   });
   const data = await res.json();
@@ -1376,6 +1774,7 @@ async function rejectUser(studentId){
   loadPendingUsers();
 }
 async function findUser(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   const studentId = searchStudentId.value.trim();
   if(!studentId){
     foundUser.innerText = "Enter Student ID";
@@ -1386,7 +1785,7 @@ async function findUser(){
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       studentId,
-      masterPassword: adminSessionPass
+      adminId: session.user.studentId
     })
   });
   const data = await res.json();
@@ -1483,7 +1882,7 @@ window.closeRoutine = function(){
     modal.classList.add("hidden");
   }
 };
-function saveBatch(){
+async function saveBatch(){
   const num = document.getElementById("setupBatchNum").value.trim();
   if(!num){
     alert("Batch number is required");
@@ -1495,14 +1894,318 @@ function saveBatch(){
     location.reload();
     return;
   }
-  session.user.batch = "ADS-" + num;
+  const batch = "ADS-" + num;
+  const res = await fetch(API + "/set-batch", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studentId: session.user.studentId,
+      batch
+    })
+  });
+  if(!res.ok){
+    alert("Failed to save batch");
+    return;
+  }
+  session.user.batch = batch;
   localStorage.setItem("auth_session", JSON.stringify(session));
+
   document.getElementById("batchModal").classList.add("hidden");
-  showProfile(); // refresh profile view
+  showProfile();
+}
+function showSupport(){
+  hideAll();
+  app.style.display = "block";
+  document.querySelector("#app nav").style.display = "flex";
+  supportPage.classList.remove("hidden");
+  supportPage.style.display = "block";
+  updateFooter("Support Center");
 }
 
-/* ===== ADD END ===== */
+function openSupportForm(type){
+  hideAll();
+  app.style.display = "block";
+  document.querySelector("#app nav").style.display = "flex";
+
+  supportFormPage.classList.remove("hidden");
+  supportFormPage.style.display = "block";
+
+  const map = {
+    materials: {
+      title: "Request for Materials",
+      subject: "Request for study materials"
+    },
+    feedback: {
+      title: "Feedback",
+      subject: ""
+    },
+    bug: {
+      title: "Report a Problem",
+      subject: ""
+    },
+    contact: {
+      title: "Contact Us",
+      subject: ""
+    }
+  };
+  const cfg = map[type];
+  document.getElementById("supportFormTitle").innerText = cfg.title;
+  document.getElementById("supportType").value = type;
+  document.getElementById("supportSubject").value = cfg.subject;
+  document.getElementById("supportMessage").value = "";
+}
+async function submitSupport(){
+
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+
+  const type = document.getElementById("supportType").value;
+  const subject = document.getElementById("supportSubject").value.trim();
+  const message = document.getElementById("supportMessage").value.trim();
+
+  if(!session.user){
+    alert("Login required");
+    return;
+  }
+
+  if(!subject || !message){
+    alert("Subject & message required");
+    return;
+  }
+
+  try{
+    const res = await fetch(API + "/support-create", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        studentId: session.user.studentId,
+        type,
+        subject,
+        message
+      })
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+      alert("✅ Submitted successfully!");
+      showProfile();
+    }else{
+      alert(data.error || "Submit failed");
+    }
+
+  }catch(err){
+    alert("Network / CORS error ❌");
+  }
+}
+
+
+
+// async function submitSupport(){
+//   alert("Button clicked");
+//   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+//   if(!session.user){
+//     alert("Please login again");
+//     return;
+//   }
+
+//   const type = document.getElementById("supportType").value;
+//   const subjectInput = document.getElementById("supportSubject");
+//   const message = document.getElementById("supportMessage").value.trim();
+
+//   const subject = subjectInput.value.trim();
+
+//   if(!subject || !message){
+//     alert("Subject and message required");
+//     return;
+//   }
+
+//   const res = await fetch(API + "/support-create", {
+//     method: "POST",
+//     headers: { "Content-Type":"application/json" },
+//     body: JSON.stringify({
+//       studentId: session.user.studentId,
+//       type,
+//       subject,
+//       message
+//     })
+//   });
+
+//   const data = await res.json();
+
+//   if(res.ok){
+//     alert("✅ Support request submitted");
+//     showSupport();
+//     subjectInput.value = "";
+//     document.getElementById("supportMessage").value = "";
+//   }else{
+//     alert(data.error || "Failed to submit");
+//   }
+// }
+async function loadMySupportRequests(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if(!session.user) return;
+
+  const list = document.getElementById("mySupportList");
+  if(!list) return;
+
+  try{
+    const res = await fetch(API + "/support-list-user", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        studentId: session.user.studentId
+      })
+    });
+
+    const data = await res.json();
+
+    if(!data.requests || data.requests.length === 0){
+      list.innerHTML =
+        "<div class='support-empty'>No support requests submitted yet.</div>";
+      return;
+    }
+
+    list.innerHTML = "";
+
+    data.requests.forEach(r => {
+      const item = document.createElement("div");
+      item.className = "support-item";
+
+      const date = r.updatedAt
+        ? new Date(r.updatedAt).toLocaleDateString()
+        : "";
+
+      item.innerHTML = `
+        <div class="support-info">
+          <div class="support-title">${r.subject}</div>
+          <div class="support-meta">
+            ${r.type.toUpperCase()} • ${date}
+          </div>
+        </div>
+        <div class="support-status ${r.status === "open" ? "pending" : r.status}">
+          ${r.status.toUpperCase()}
+        </div>
+      `;
+
+      list.appendChild(item);
+    });
+
+  }catch(e){
+    list.innerHTML =
+      "<div class='support-empty'>Failed to load requests</div>";
+  }
+}
+
+function showContactInfo(){
+  hideAll();
+  app.style.display = "block";
+  document.querySelector("#app nav").style.display = "flex";
+
+  contactInfoPage.classList.remove("hidden");
+  contactInfoPage.style.display = "block";
+
+  updateFooter("Contact Information");
+}
+async function loadAdminSupportInbox(){
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if(!session.user?.isAdmin) return; 
+  const box = document.getElementById("adminSupportList");
+  if(!box) return;
+  box.innerHTML = "<p style='opacity:.6'>⏳ Loading open support requests...</p>";
+  try{
+    const res = await fetch(API + "/support-list-admin", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        adminId: session.user.studentId
+      })
+    });
+
+    const data = await res.json();
+
+    if(!data.requests || data.requests.length === 0){
+      box.innerHTML = "<p>No support requests.</p>";
+      return;
+    }
+
+    box.innerHTML = "";
+
+    const openRequests = data.requests.filter(r => r.status === "open");
+
+    if(openRequests.length === 0){
+      box.innerHTML = "<p>🎉 No open support requests.</p>";
+      return;
+    }
+    openRequests
+      .sort((a,b)=>b.updatedAt - a.updatedAt)
+      .forEach(r => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.style.marginBottom = "12px";
+
+        div.innerHTML = `
+          <p><b>${r.subject}</b></p>
+          <p style="opacity:.75">
+            ${r.studentId} • ${r.type.toUpperCase()}
+          </p>
+          <p style="font-size:13px;opacity:.7">${r.message}</p>
+
+          <select id="status-${r.id}">
+            <option value="open" ${r.status==="open"?"selected":""}>Open</option>
+            <option value="resolved" ${r.status==="resolved"?"selected":""}>Resolved</option>
+            <option value="rejected" ${r.status==="rejected"?"selected":""}>Rejected</option>
+          </select>
+          <button onclick="updateSupportStatus('${r.id}', document.getElementById('status-${r.id}').value)">
+            Update
+          </button>
+        `;
+        box.appendChild(div);
+      });
+
+  }catch(e){
+    box.innerHTML = "<p>Failed to load support inbox</p>";
+  }
+}
+async function updateSupportStatus(requestId){
+  const select = document.getElementById("status-" + requestId);
+  if(!select){
+    alert("Status selector not found");
+    return;
+  }
+
+  const status = select.value;
+
+  const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+  if(!session.user?.isAdmin){
+    alert("Unauthorized");
+    return;
+  }
+
+  const res = await fetch(API + "/support-update-status", {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify({
+      adminId: session.user.studentId,
+      requestId,
+      status
+    })
+  });
+
+  const data = await res.json();
+
+  if(res.ok){
+    alert("Status updated");
+    loadAdminSupportInbox();
+  }else{
+    alert(data.error || "Failed to update status");
+  }
+}
+
+
+
+
 </script>
+
 <!-- BATCH SETUP MODAL -->
 <div id="batchModal" class="modal hidden">
   <div class="modal-box" style="max-width:420px;height:auto">
@@ -1532,6 +2235,5 @@ function saveBatch(){
     <button onclick="closeRoutine()">Close</button>
   </div>
 </div>
-
 </body>
 </html>
