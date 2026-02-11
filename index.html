@@ -1086,7 +1086,7 @@ button:disabled{
     <li onclick="showDashboard()">Home</li>
     <li onclick="showSpecialProgram()">Special Program</li>
     <li onclick="showProfile()">Profile</li>
-    <li onclick="showSupport()">Support</li>
+    <li id="supportNav" onclick="showSupport()">Support</li>
     <li id="adminNav" onclick="showAdmin()" style="display:none">Admin</li>
   </ul>
 </nav>
@@ -1452,6 +1452,14 @@ function showDashboard(){
   updateWelcomeName();
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
   const adminNav = document.getElementById("adminNav");
+  const supportNav = document.getElementById("supportNav");
+  if (session.user?.isAdmin) {
+    adminNav.style.display = "block";
+    supportNav.style.display = "none";
+  } else {
+    adminNav.style.display = "none";
+    supportNav.style.display = "block";
+  }
   if (session.user?.isAdmin) {
     adminNav.style.display = "block";
   } else {
@@ -1520,15 +1528,11 @@ function showProfile(){
       <p>• Program Duration: 4 Years</p>
       <p>• Total Semesters: 12</p>
     </div>
-
     <!-- CARD 3: NOTICE -->
     <div class="card">
     <h3>📢 Notice</h3>
-
     <p class="notice-highlight">Mid-term starts from 06 March.</p>
-
     <h3>📑 Exam Schedule</h3>
-
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button onclick="showExam('mid')">Mid-term</button>
       <button onclick="showExam('final')">Final</button>
@@ -1543,7 +1547,15 @@ function showProfile(){
       </div>
     </div>
   `;
-  loadMySupportRequests();
+  if(!user.isAdmin){
+    setTimeout(()=>{
+      loadMySupportRequests();
+    },0);
+  }else{
+    const sec=document.querySelector(".support-history-card");
+    if(sec) sec.style.display="none";
+  }
+
   // 🔥 FORCE BATCH SETUP FOR OLD USERS
   if(!user.batch){
     document.getElementById("batchModal").classList.remove("hidden");
@@ -1745,13 +1757,19 @@ if (typeof loginOtp !== "undefined") {
 
 function updateWelcomeName(){
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
-  const name = session?.user?.name || "Student";
-
+  const user = session?.user || {};
+  const name = user.name || "Student";
   const el = document.getElementById("welcomeText");
-  if(el){
+  if(!el) return;
+  if(user.isAdmin){
+    el.innerHTML =
+      "Welcome back, " + name +
+      ' <span style="background:#ef4444;color:#fff;padding:3px 8px;border-radius:6px;font-size:12px;margin-left:6px;">ADMIN</span>';
+  }else{
     el.innerText = "Welcome back, " + name + " 👋";
   }
 }
+
 function showSpecialProgram(){
   hideAll();
   app.style.display = "flex";
