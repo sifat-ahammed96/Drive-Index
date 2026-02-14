@@ -825,13 +825,13 @@ button:disabled{
 
 .support-history-card{
   animation: fadeUp 0.5s ease;
+  grid-column: 1 / -1;
 }
 
 .support-list{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 14px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap:16px;
 }
 
 .support-item{
@@ -847,7 +847,9 @@ button:disabled{
   );
   border: 1px solid rgba(148,163,184,0.15);
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-  animation: fadeUp 0.4s ease;
+  cursor:pointer;
+  transition: transform .15s ease;
+  will-change: transform;
 }
 
 .support-info{
@@ -1006,6 +1008,15 @@ button:disabled{
 }
 .hidden{
   display:none;
+}
+.support-item{
+  cursor:pointer;
+  transition: transform .2s;
+}
+
+.support-item:hover{
+  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 
 </style>
@@ -1400,8 +1411,38 @@ button:disabled{
   </div>
 </div>
 
-
 <footer class="site-footer hidden" id="simpleFooter"> © 2026 ADS 250 | All rights reserved </footer>
+
+<div id="supportModal" class="modal hidden">
+  <div class="modal-box">
+
+    <h2 id="modalSubject"></h2>
+
+    <div class="modal-content">
+      <p><b>Type:</b> <span id="modalType"></span></p>
+      <p><b>Status:</b> <span id="modalStatus"></span></p>
+
+      <p><b>Message:</b></p>
+      <p id="modalMessage"></p>
+
+      <hr>
+
+      <p> <b style="background:rgba(250,204,21,0.15); color:#facc15; padding:4px 8px; border-radius:6px;"> ⚠️ Admin Note: </b> </p>
+      <p id="modalNote" style="
+        margin-top:8px;
+        padding:10px 12px;
+        background:rgba(250,204,21,0.15);
+        color:#facc15;
+        border-left:4px solid #facc15;
+        border-radius:6px;
+        font-weight:600;
+      "></p>
+    </div>
+
+    <button onclick="closeSupportModal()">Close</button>
+  </div>
+</div>
+
 <script>
 const API = "https://ads-auth.sifatraj280.workers.dev";
 const SESSION_DURATION = 30 * 60 * 1000;
@@ -1515,7 +1556,18 @@ function showProfile(){
       <p>📧 <b>Email</b><br>${user.email}</p>
       <p>🎓 <b>Student ID</b><br>${user.studentId}</p>
 
-      <button onclick="logout()" style="margin-top:15px">
+      <button onclick="logout()" style="
+        margin-top:0px auto 0 auto;
+        display:block;
+        background:#dc2626;
+        color:white;
+        border:none;
+        padding:12px 36px;
+        border-radius:10px;
+        cursor:pointer;
+        font-weight:700;
+        box-shadow:0 4px 10px rgba(220,38,38,.4);
+      ">
         🚪 Logout
       </button>
     </div>
@@ -2138,12 +2190,10 @@ async function submitSupport(){
     alert("Login required");
     return;
   }
-
   if(!subject || !message){
     alert("Subject & message required");
     return;
   }
-
   try{
     const res = await fetch(API + "/support-create", {
       method: "POST",
@@ -2164,7 +2214,6 @@ async function submitSupport(){
     }else{
       alert(data.error || "Submit failed");
     }
-
   }catch(err){
     alert("Network / CORS error ❌");
   }
@@ -2176,7 +2225,6 @@ async function loadMySupportRequests(){
 
   const list = document.getElementById("mySupportList");
   if(!list) return;
-
   try{
     const res = await fetch(API + "/support-list-user", {
       method: "POST",
@@ -2199,6 +2247,10 @@ async function loadMySupportRequests(){
     data.requests.forEach(r => {
       const item = document.createElement("div");
       item.className = "support-item";
+      item.addEventListener("click", function(e){
+        e.stopPropagation();
+        openSupportModal(r);
+      });
 
       const date = r.updatedAt
         ? new Date(r.updatedAt).toLocaleDateString()
@@ -2215,13 +2267,16 @@ async function loadMySupportRequests(){
             <div style="
               margin-top:6px;
               font-size:12px;
-              color:${r.status==="rejected"
-              ? "#facc15"
-              : r.status==="resolved"
-              ? "#22c55e"
-              : "#38bdf8"};
+              color:${
+                r.status === "rejected"
+                  ? "#ef4444"
+                  : r.status === "resolved"
+                  ? "#22c55e"
+                  : "#facc15"
+              };
+              font-weight:600;
             ">
-              Admin Note: ${r.adminNote}
+              ⚠️ Admin responded — click to read
             </div>
           ` : ""}
         </div>
@@ -2238,6 +2293,31 @@ async function loadMySupportRequests(){
     list.innerHTML =
       "<div class='support-empty'>Failed to load requests</div>";
   }
+}
+function openSupportModal(r){
+  supportModal.classList.remove("hidden");
+  requestAnimationFrame(()=>{
+    modalSubject.textContent = r.subject;
+    modalType.textContent = r.type;
+    modalStatus.textContent = r.status;
+    if(r.status === "rejected"){
+      modalStatus.style.color = "#ef4444";
+      modalStatus.style.fontWeight = "700";
+    }
+    else if(r.status === "resolved"){
+      modalStatus.style.color = "#22c55e";
+      modalStatus.style.fontWeight = "700";
+    }
+    else{
+      modalStatus.style.color = "#facc15";
+      modalStatus.style.fontWeight = "700";
+    }
+    modalMessage.textContent = r.message || "No message provided";
+    modalNote.textContent = r.adminNote || "No admin note";
+  });
+}
+function closeSupportModal(){
+  supportModal.classList.add("hidden");
 }
 
 function showContactInfo(){
