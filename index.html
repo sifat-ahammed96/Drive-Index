@@ -2263,6 +2263,16 @@ async function loadMySupportRequests(){
           <div class="support-meta">
             ${r.type.toUpperCase()} • ${date}
           </div>
+          <div style="font-size:12px; opacity:.7; margin-top:4px;">
+            ${(() => {
+              const exp = getExpiryText(r.createdAt);
+              return `
+                <div style="font-size:12px; margin-top:4px; color:${exp.color};">
+                  ⏳ ${exp.text}
+                </div>
+              `;
+            })()}
+          </div>
           ${r.adminNote ? `
             <div style="
               margin-top:6px;
@@ -2294,6 +2304,27 @@ async function loadMySupportRequests(){
       "<div class='support-empty'>Failed to load requests</div>";
   }
 }
+function getExpiryText(createdAt){
+  if(!createdAt) return { text:"", color:"#999" };
+
+  const now = Date.now();
+  const diff = now - createdAt;
+  const daysPassed = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const daysLeft = 7 - daysPassed;
+
+  if(daysLeft <= 0){
+    return { text:"Expired", color:"#ef4444" };
+  }
+  if(daysLeft <= 2){
+    return { text:`Expires in ${daysLeft} day${daysLeft>1?"s":""}`, color:"#ef4444" };
+  }
+  if(daysLeft <= 4){
+    return { text:`Expires in ${daysLeft} days`, color:"#facc15" };
+  }
+  return { text:`Expires in ${daysLeft} days`, color:"#9ca3af" };
+}
+
+
 function openSupportModal(r){
   supportModal.classList.remove("hidden");
   requestAnimationFrame(()=>{
