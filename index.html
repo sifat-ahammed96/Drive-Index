@@ -30,8 +30,10 @@ body {
     linear-gradient(120deg,#020617,#0b1220,#111827);
   background-attachment: fixed;
 }
+.hidden{display:none}
 .center{
   height:100vh;
+  display:none;          /* 🔥 ADD */
   justify-content:center;
   align-items:center;
   position:fixed;
@@ -1005,7 +1007,7 @@ button:disabled{
   overflow:visible;
 }
 .hidden{
-  display:none !important;
+  display:none;
 }
 .support-item{
   cursor:pointer;
@@ -1044,7 +1046,7 @@ button:disabled{
 </div>
 
 <!-- REGISTER -->
-<div id="register" class="center hidden">
+<div id="register" class="center">
   <div class="box register-box">
     <h2>📝 Registration Portal</h2>
     <input id="regName" placeholder="Full Name">
@@ -2048,7 +2050,9 @@ async function findUser(){
 
 window.onload = () => {
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
+
   hideAll();
+
   if (
     session.loginTime &&
     Date.now() - session.loginTime < SESSION_DURATION
@@ -2058,7 +2062,6 @@ window.onload = () => {
   localStorage.removeItem("auth_session");
   app.style.display = "none";              // 🔥 ADD
   document.querySelector("#app nav").style.display = "none"; // 🔥 ADD
-  login.classList.remove("hidden");
   login.style.display = "flex";}
 
   document.getElementById("simpleFooter").style.display = "block";
