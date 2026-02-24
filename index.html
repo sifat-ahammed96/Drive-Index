@@ -2292,7 +2292,7 @@ async function loadMySupportRequests(){
           </div>
           <div style="font-size:12px; opacity:.7; margin-top:4px;">
             ${(() => {
-              const exp = getExpiryText(r.createdAt);
+              const exp = getExpiryText(r);
               return `
                 <div style="font-size:12px; margin-top:4px; color:${exp.color};">
                   ⏳ ${exp.text}
@@ -2331,21 +2331,29 @@ async function loadMySupportRequests(){
       "<div class='support-empty'>Failed to load requests</div>";
   }
 }
-function getExpiryText(createdAt){
-  if(!createdAt) return { text:"", color:"#999" };
-
+function getExpiryText(r){
+  if(!r.createdAt) return { text:"", color:"#999" };
+  let expireDays = 7;
+  let baseTime = r.createdAt;
+  if(r.status === "resolved"){
+    expireDays = 3;
+    baseTime = r.updatedAt;
+  }
+  if(r.status === "rejected"){
+    expireDays = 1;
+    baseTime = r.updatedAt;
+  }
   const now = Date.now();
-  const diff = now - createdAt;
-  const daysPassed = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const daysLeft = 7 - daysPassed;
-
+  const diff = now - baseTime;
+  const daysPassed = Math.floor(diff / (1000*60*60*24));
+  const daysLeft = expireDays - daysPassed;
   if(daysLeft <= 0){
     return { text:"Expired", color:"#ef4444" };
   }
-  if(daysLeft <= 2){
-    return { text:`Expires in ${daysLeft} day${daysLeft>1?"s":""}`, color:"#ef4444" };
+  if(daysLeft <= 1){
+    return { text:`Expires in ${daysLeft} day`, color:"#ef4444" };
   }
-  if(daysLeft <= 4){
+  if(daysLeft <= 2){
     return { text:`Expires in ${daysLeft} days`, color:"#facc15" };
   }
   return { text:`Expires in ${daysLeft} days`, color:"#9ca3af" };
