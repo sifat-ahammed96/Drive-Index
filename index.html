@@ -30,10 +30,8 @@ body {
     linear-gradient(120deg,#020617,#0b1220,#111827);
   background-attachment: fixed;
 }
-.hidden{display:none}
 .center{
   height:100vh;
-  display:none;          /* 🔥 ADD */
   justify-content:center;
   align-items:center;
   position:fixed;
@@ -1007,7 +1005,7 @@ button:disabled{
   overflow:visible;
 }
 .hidden{
-  display:none;
+  display:none !important;
 }
 .support-item{
   cursor:pointer;
@@ -1752,15 +1750,38 @@ const driveLinks={
                      "Final":{materials:"https://drive.google.com/drive/folders/1tbdu7TPKU0w03GbssICQamYrXPIGVhzu",resources:"https://drive.google.com/drive/folders/1j4tChwBkQd6p3UGiT1lQJbmUfO4YsACm"}},
   "Professional English":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1OMMcheIQK8A2BB7KzX9QqNnjAjKrc8OM",resources:"https://drive.google.com/drive/folders/16qp3S_Sx-axHmDkvUoGgME4NORZqQw81"},
                             "Final":{materials:"https://drive.google.com/drive/folders/16pan3rzXkFE1KQ-6qNviaD4vryvbIxZX",resources:"https://drive.google.com/drive/folders/1VTYy4SxTPG8FvHCgWIPbzy4SQKjkHNDu"}},
-  "Physics Lab":{ "Mid-Term":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX"},
-                  "Final":{materials:"https://drive.google.com/XXXX",resources:"https://drive.google.com/XXXX"}},
+  "Physics Lab":{
+      manual:"https://drive.google.com/drive/folders/1HjecAvE73gN3AuWpgkMsZUxfE0xBY3Sb",
+      worksheet:"https://drive.google.com/drive/folders/1J52i7wmnLx3as3sJenQWEdrzFBIT7IsN",
+      recording:"https://drive.google.com/drive/folders/1rd_3IiUR-_NejdHhwLvKJl7SM5SMobvO"
+    },
   "Professional Life Skill Development":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1A8NQ2uzFXIplFlfdqhyZILat6IqcuY5P",resources:"https://drive.google.com/drive/folders/1RZgT4L_K-eBdDkDTCFsWXM2KZMHdkDEc"},
                                           "Final":{materials:"https://drive.google.com/drive/folders/1ncRDAClQSUpt-XKxxyKCJDLo5OTRwPDS",resources:"https://drive.google.com/drive/folders/15vVAgmELPG78JoZXSYw8M9uWFec4khsk"}}
 };
 
 document.querySelectorAll("#semester .grid .card").forEach(card=>{
   card.addEventListener("click",()=>{
-    currentCourse=card.querySelector("h2").innerText.trim();
+    currentCourse = card.querySelector("h2").innerText.trim();
+    if(currentCourse === "Physics Lab"){
+      semester.classList.add("hidden");
+      examView.classList.remove("hidden");
+      examTitle.innerText = "Physics Lab";
+      updateFooter(currentCourse);
+      const examBox = document.querySelector("#examView .option-grid");
+      examBox.innerHTML = `
+        <div class="option-card" onclick="openDrive('manual')">
+          <h3>📘 Lab Manual</h3>
+        </div>
+        <div class="option-card" onclick="openDrive('worksheet')">
+          <h3>📝 Worksheet</h3>
+        </div>
+        <div class="option-card" onclick="openDrive('recording')">
+          <h3>🎥 Class Recording</h3>
+        </div>
+      `;
+      return;
+    }
+    // 🔵 Normal course flow
     semester.classList.add("hidden");
     courseView.classList.remove("hidden");
     courseTitle.innerText=currentCourse;
@@ -1786,6 +1807,10 @@ function backToSemester(){
   updateFooter("Spring Semester 2026");
 }
 function openDrive(t){
+  if(currentCourse === "Physics Lab"){
+    window.open(driveLinks[currentCourse][t],"_blank");
+    return;
+  }
   window.open(driveLinks[currentCourse][currentExam][t],"_blank");
 }
 
@@ -2023,9 +2048,7 @@ async function findUser(){
 
 window.onload = () => {
   const session = JSON.parse(localStorage.getItem("auth_session") || "{}");
-
   hideAll();
-
   if (
     session.loginTime &&
     Date.now() - session.loginTime < SESSION_DURATION
@@ -2035,6 +2058,7 @@ window.onload = () => {
   localStorage.removeItem("auth_session");
   app.style.display = "none";              // 🔥 ADD
   document.querySelector("#app nav").style.display = "none"; // 🔥 ADD
+  login.classList.remove("hidden");
   login.style.display = "flex";}
 
   document.getElementById("simpleFooter").style.display = "block";
