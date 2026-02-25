@@ -1174,6 +1174,7 @@ button:disabled{
     <div class="option-grid">
       <div class="option-card" onclick="openDrive('materials')"><h3>📁 Class Materials</h3></div>
       <div class="option-card" onclick="openDrive('resources')"><h3>📚 Resources</h3></div>
+      <div class="option-card" onclick="openDrive('recordings')"><h3>🎥 Class Recording</h3></div>
     </div>
   </div>
 </div>
@@ -1746,9 +1747,11 @@ let currentCourse="", currentExam="";
 const driveLinks={
   "Introduction to Data Science":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1Xp9ExGdaMFP-tEDOcXe_nMFQNx-qf9ff",resources:"https://drive.google.com/drive/folders/1me-kPCjlg2lkYhMt8nIo1Sb_9-V8GFgt"},
                   "Final":{materials:"https://drive.google.com/drive/folders/1g9ZWYrxDFp6cN9Tl_oAjFmdHbo0i9yGn",resources:"https://drive.google.com/drive/folders/1fNsP-UVGRA-jAo0Iq0wKjpwI3q9qaNz0"}},
-  "Physics":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1mWdjn-bPRfhfNVMLn99AE-7iZlPYXR8J",resources:"https://drive.google.com/drive/folders/1EHVW1fpej1KGaZpPdOQgdIHxKcgM4b5D"},
+  "Physics":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1mWdjn-bPRfhfNVMLn99AE-7iZlPYXR8J",resources:"https://drive.google.com/drive/folders/1EHVW1fpej1KGaZpPdOQgdIHxKcgM4b5D",
+    recordings:"https://drive.google.com/drive/folders/124PowyDacOiaQudoGunfn-3byMmmqW0M"},
               "Final":{materials:"https://drive.google.com/drive/folders/1en4CruG9nBhXwK9MltiY82j_GMntye2L",resources:"https://drive.google.com/drive/folders/1_qGAkiH5Vf_U7GZcO2JyJFrkXVaXiyGO"}},
-  "Linear Algebra":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1KlMnxFWVkcIhd66BUvlohIOc9b1N953Q",resources:"https://drive.google.com/drive/folders/1G6T40uJsXDQA7Ermli5ThOAIvrZgle-g"},
+  "Linear Algebra":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1KlMnxFWVkcIhd66BUvlohIOc9b1N953Q",resources:"https://drive.google.com/drive/folders/1G6T40uJsXDQA7Ermli5ThOAIvrZgle-g",
+    recordings:"https://drive.google.com/drive/folders/1zvv1TqElflZ2qejFvETdAhMgepxEySr4"},
                      "Final":{materials:"https://drive.google.com/drive/folders/1tbdu7TPKU0w03GbssICQamYrXPIGVhzu",resources:"https://drive.google.com/drive/folders/1j4tChwBkQd6p3UGiT1lQJbmUfO4YsACm"}},
   "Professional English":{ "Mid-Term":{materials:"https://drive.google.com/drive/folders/1OMMcheIQK8A2BB7KzX9QqNnjAjKrc8OM",resources:"https://drive.google.com/drive/folders/16qp3S_Sx-axHmDkvUoGgME4NORZqQw81"},
                             "Final":{materials:"https://drive.google.com/drive/folders/16pan3rzXkFE1KQ-6qNviaD4vryvbIxZX",resources:"https://drive.google.com/drive/folders/1VTYy4SxTPG8FvHCgWIPbzy4SQKjkHNDu"}},
